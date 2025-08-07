@@ -106,7 +106,10 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
                   className="h-4 w-4"
                 />
                 <label htmlFor={type.name} className="flex-1 flex items-center justify-between text-sm text-foreground cursor-pointer">
-                  <span>{type.name}</span>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-3 h-3 rounded-full ${type.color}`}></div>
+                    <span>{type.name}</span>
+                  </div>
                   {type.count > 0 && (
                     <span className="bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded-md font-medium">
                       {type.count}
