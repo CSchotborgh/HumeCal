@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { Event } from "@shared/schema";
 
 interface EventModalProps {
@@ -108,17 +109,7 @@ export function EventModal({ event, onClose }: EventModalProps) {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-4">Pricing Options</h3>
-              <div className="space-y-3">
-                {event.pricingOptions.map((option, index) => (
-                  <div key={index} className="flex justify-between py-3 px-4 bg-muted rounded-md">
-                    <span className="text-foreground font-medium">{option.name}</span>
-                    <span className="font-semibold text-foreground">${option.price}</span>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-md">
+              <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-md">
                 <div className="flex justify-between text-base">
                   <span className="font-semibold text-foreground">Price Range</span>
                   <span className="font-bold text-primary text-lg">
@@ -127,7 +118,25 @@ export function EventModal({ event, onClose }: EventModalProps) {
                 </div>
               </div>
 
-              <div className="mt-6 space-y-3">
+              <Accordion type="single" collapsible className="mb-6">
+                <AccordionItem value="pricing" className="border-border">
+                  <AccordionTrigger className="text-lg font-semibold text-foreground hover:no-underline">
+                    Pricing Options ({event.pricingOptions.length})
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-3 pt-2">
+                      {event.pricingOptions.map((option, index) => (
+                        <div key={index} className="flex justify-between py-3 px-4 bg-muted rounded-md">
+                          <span className="text-foreground font-medium">{option.name}</span>
+                          <span className="font-semibold text-foreground">${option.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              <div className="space-y-3">
                 <Button className="w-full bg-primary text-primary-foreground font-medium py-3 px-4 rounded-md hover:bg-primary/90 transition-colors">
                   Register Now
                 </Button>
