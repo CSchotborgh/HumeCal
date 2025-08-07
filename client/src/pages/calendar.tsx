@@ -112,48 +112,47 @@ export default function Calendar() {
   }
 
   return (
-    <div className="min-h-screen bg-warm-gray dark:bg-warm-gray">
+    <div className="min-h-screen bg-background dark:bg-background">
       {/* Header */}
-      <header className="bg-white dark:bg-card shadow-sm border-b border-gray-200 dark:border-border">
+      <header className="bg-background dark:bg-background border-b border-border sticky top-0 z-40 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <img 
-                src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
-                alt="Hume Lake Logo" 
-                className="w-12 h-12 rounded-lg object-cover"
-              />
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+                <span className="text-primary-foreground font-semibold text-sm">HL</span>
+              </div>
               <div>
-                <h1 className="text-xl font-bold text-forest dark:text-forest">Hume Lake Christian Camps</h1>
-                <p className="text-sm text-gray-600 dark:text-muted-foreground">Events Calendar 2025-2026</p>
+                <h1 className="text-lg font-semibold text-foreground">Hume Lake Christian Camps</h1>
+                <p className="text-xs text-muted-foreground">Events Calendar 2025-2026</p>
               </div>
             </div>
-            <nav className="hidden md:flex items-center space-x-6">
-              <a href="#" className="text-gray-700 dark:text-muted-foreground hover:text-forest dark:hover:text-forest transition-colors">Summer Camps</a>
-              <a href="#" className="text-gray-700 dark:text-muted-foreground hover:text-forest dark:hover:text-forest transition-colors">Retreats</a>
-              <a href="#" className="text-gray-700 dark:text-muted-foreground hover:text-forest dark:hover:text-forest transition-colors">Contact</a>
+            <nav className="hidden md:flex items-center space-x-1">
+              <Button variant="ghost" size="sm" className="text-sm">Summer Camps</Button>
+              <Button variant="ghost" size="sm" className="text-sm">Retreats</Button>
+              <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
+              <div className="h-4 w-px bg-border mx-3"></div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="mr-2"
+                className="w-8 h-8"
               >
                 {theme === "light" ? (
-                  <Moon className="h-5 w-5" />
+                  <Moon className="h-4 w-4" />
                 ) : (
-                  <Sun className="h-5 w-5" />
+                  <Sun className="h-4 w-4" />
                 )}
               </Button>
-              <Button className="bg-forest text-white hover:bg-pine">Register</Button>
+              <Button size="sm" className="ml-2">Register</Button>
             </nav>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="lg:grid lg:grid-cols-4 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="lg:grid lg:grid-cols-4 lg:gap-6">
           {/* Sidebar Filters */}
-          <div className="lg:col-span-1 mb-8 lg:mb-0">
+          <div className="lg:col-span-1 mb-6 lg:mb-0">
             <EventFilters 
               filters={filters}
               onFiltersChange={setFilters}
@@ -164,142 +163,186 @@ export default function Calendar() {
           {/* Main Calendar */}
           <div className="lg:col-span-3">
             {/* Calendar Navigation */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4">
+            <div className="bg-card border border-border rounded-lg shadow-sm mb-6">
+              <div className="px-6 py-4 border-b border-border">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
                     <Button
                       variant="ghost"
-                      size="icon"
+                      size="sm"
                       onClick={() => navigateMonth('prev')}
-                      className="hover:bg-gray-100"
+                      className="h-8 w-8 p-0"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-4 h-4" />
                     </Button>
-                    <h2 className="text-2xl font-bold text-camp-charcoal dark:text-camp-charcoal">{currentMonthName}</h2>
+                    <h2 className="text-xl font-semibold text-foreground">{currentMonthName}</h2>
                     <Button
                       variant="ghost"
-                      size="icon"
+                      size="sm"
                       onClick={() => navigateMonth('next')}
-                      className="hover:bg-gray-100"
+                      className="h-8 w-8 p-0"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex space-x-2">
-                    <Button className="bg-forest text-white hover:bg-pine">Month</Button>
-                    <Button variant="outline">List</Button>
+                  <div className="flex space-x-1">
+                    <Button size="sm" variant="default">Month</Button>
+                    <Button size="sm" variant="ghost">List</Button>
                   </div>
                 </div>
-
+              </div>
+              <div className="p-6">
                 <CalendarGrid 
                   currentDate={currentDate}
                   events={filteredEvents}
                   onEventClick={handleEventClick}
                 />
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Event Legend */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-camp-charcoal dark:text-camp-charcoal mb-4">Event Types</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="bg-card border border-border rounded-lg shadow-sm mb-6">
+              <div className="px-6 py-4 border-b border-border">
+                <h3 className="text-sm font-semibold text-foreground">Event Types</h3>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-forest rounded"></div>
-                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Family Events</span>
+                    <div className="w-3 h-3 bg-primary rounded-sm"></div>
+                    <span className="text-sm text-foreground">All Events</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-lake rounded"></div>
-                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Women's Retreats</span>
+                    <div className="w-3 h-3 bg-forest rounded-sm"></div>
+                    <span className="text-sm text-muted-foreground">Family Events</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-earth rounded"></div>
-                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Men's/Pastors</span>
+                    <div className="w-3 h-3 bg-lake rounded-sm"></div>
+                    <span className="text-sm text-muted-foreground">Women's Retreats</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-sunset rounded"></div>
-                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Youth Programs</span>
+                    <div className="w-3 h-3 bg-earth rounded-sm"></div>
+                    <span className="text-sm text-muted-foreground">Men's/Pastors</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-purple-600 rounded"></div>
-                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Creative Arts</span>
+                    <div className="w-3 h-3 bg-sunset rounded-sm"></div>
+                    <span className="text-sm text-muted-foreground">Youth Programs</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-pine rounded"></div>
-                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Marriage Retreats</span>
+                    <div className="w-3 h-3 bg-purple-600 rounded-sm"></div>
+                    <span className="text-sm text-muted-foreground">Creative Arts</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Upcoming Events List */}
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-camp-charcoal dark:text-camp-charcoal mb-4">Upcoming Events</h3>
-                <div className="space-y-4">
-                  {filteredEvents.slice(0, 5).map(event => {
-                    const minPrice = Math.min(...event.pricingOptions.map(p => p.price));
-                    const maxPrice = Math.max(...event.pricingOptions.map(p => p.price));
-                    
-                    return (
-                      <div 
-                        key={event.id}
-                        className="border border-gray-200 dark:border-border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
-                        onClick={() => handleEventClick(event)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className={`w-3 h-3 rounded-full ${
-                              event.eventType.includes("Women") ? "bg-lake" :
-                              event.eventType.includes("Men") || event.eventType.includes("Pastor") ? "bg-earth" :
-                              event.eventType.includes("Family") ? "bg-forest" :
-                              event.eventType.includes("Young") ? "bg-sunset" :
-                              event.eventType.includes("Creative") ? "bg-purple-600" :
-                              "bg-pine"
-                            }`}></div>
-                            <div>
-                              <h4 className="font-medium text-camp-charcoal dark:text-camp-charcoal">{event.title}</h4>
-                              <p className="text-sm text-gray-600 dark:text-muted-foreground">
-                                {new Date(event.startDate).toLocaleDateString('en-US', { 
-                                  month: 'long', 
-                                  day: 'numeric', 
-                                  year: 'numeric' 
-                                })}
-                                {event.endDate !== event.startDate && (
-                                  ` - ${new Date(event.endDate).toLocaleDateString('en-US', { 
-                                    month: 'long', 
-                                    day: 'numeric', 
-                                    year: 'numeric' 
-                                  })}`
-                                )}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-medium text-camp-charcoal dark:text-camp-charcoal">
-                              ${minPrice}{minPrice !== maxPrice ? ` - $${maxPrice}` : ''}
+            <div className="bg-card border border-border rounded-lg shadow-sm">
+              <div className="px-6 py-4 border-b border-border">
+                <h3 className="text-sm font-semibold text-foreground">Upcoming Events</h3>
+              </div>
+              <div className="divide-y divide-border">
+                {filteredEvents.slice(0, 5).map(event => {
+                  const minPrice = Math.min(...event.pricingOptions.map(p => p.price));
+                  const maxPrice = Math.max(...event.pricingOptions.map(p => p.price));
+                  
+                  return (
+                    <div 
+                      key={event.id}
+                      className="p-4 hover:bg-muted/50 transition-colors cursor-pointer"
+                      onClick={() => handleEventClick(event)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
+                          <div>
+                            <h4 className="text-sm font-medium text-foreground">{event.title}</h4>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(event.startDate).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric' 
+                              })}
+                              {event.endDate !== event.startDate && (
+                                ` — ${new Date(event.endDate).toLocaleDateString('en-US', { 
+                                  month: 'short', 
+                                  day: 'numeric' 
+                                })}`
+                              )}
+                              <span className="mx-1">•</span>
+                              {event.ageGroup}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-muted-foreground">{event.ageGroup} {event.gender !== "Coed" ? `• ${event.gender}` : ""}</p>
                           </div>
                         </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-foreground">
+                            ${minPrice}{minPrice !== maxPrice ? `+` : ''}
+                          </p>
+                        </div>
                       </div>
-                    );
-                  })}
-                  
-                  {filteredEvents.length > 5 && (
-                    <div className="text-center pt-4">
-                      <Button variant="ghost" className="text-forest hover:text-pine">
-                        View All Events →
-                      </Button>
                     </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                  );
+                })}
+                
+                {filteredEvents.length > 5 && (
+                  <div className="p-4 text-center">
+                    <Button variant="ghost" size="sm" className="text-sm">
+                      View all events
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-background border-t border-border mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="col-span-2">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-6 h-6 bg-primary rounded-md flex items-center justify-center">
+                  <span className="text-primary-foreground font-semibold text-xs">HL</span>
+                </div>
+                <span className="text-sm font-medium text-foreground">Hume Lake Christian Camps</span>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-md">
+                Creating life-changing experiences through Christian camp ministry in the beautiful Sierra Nevada mountains.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Programs</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition-colors">Summer Camps</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Family Retreats</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Youth Programs</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Adult Conferences</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Connect</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-foreground transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Visit Campus</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Support</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors">Newsletter</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-border mt-8 pt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-xs text-muted-foreground">
+                © 2025 Hume Lake Christian Camps. All rights reserved.
+              </p>
+              <div className="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Privacy</a>
+                <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Terms</a>
+                <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Safety</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       {/* Event Modal */}
       {showModal && selectedEvent && (

@@ -28,25 +28,27 @@ export function EventModal({ event, onClose }: EventModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
       <div 
-        className="bg-white dark:bg-card rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-background border border-border rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-camp-charcoal dark:text-camp-charcoal">{event.title}</h2>
+        <div className="border-b border-border px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
             <Button
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:text-muted-foreground dark:hover:text-foreground"
+              className="h-8 w-8 text-muted-foreground hover:text-foreground"
             >
-              <X className="w-6 h-6" />
+              <X className="w-4 h-4" />
             </Button>
           </div>
+        </div>
+        <div className="p-6">
 
           <img 
             src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
@@ -56,52 +58,52 @@ export function EventModal({ event, onClose }: EventModalProps) {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-camp-charcoal dark:text-camp-charcoal mb-2">Event Details</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-muted-foreground">Date:</span>
-                  <span className="font-medium text-foreground dark:text-foreground">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Event Details</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between py-1">
+                  <span className="text-muted-foreground">Date</span>
+                  <span className="font-medium text-foreground">
                     {formatDate(event.startDate)}
-                    {event.endDate !== event.startDate && ` - ${formatDate(event.endDate)}`}
+                    {event.endDate !== event.startDate && ` — ${formatDate(event.endDate)}`}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-muted-foreground">Location:</span>
-                  <span className="font-medium text-foreground dark:text-foreground">{event.location}</span>
+                <div className="flex justify-between py-1">
+                  <span className="text-muted-foreground">Location</span>
+                  <span className="font-medium text-foreground">{event.location}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-muted-foreground">Age Group:</span>
-                  <span className="font-medium text-foreground dark:text-foreground">{event.ageGroup}</span>
+                <div className="flex justify-between py-1">
+                  <span className="text-muted-foreground">Age Group</span>
+                  <span className="font-medium text-foreground">{event.ageGroup}</span>
                 </div>
                 {event.gender && event.gender !== "Coed" && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-muted-foreground">Gender:</span>
-                    <span className="font-medium text-foreground dark:text-foreground">{event.gender}</span>
+                  <div className="flex justify-between py-1">
+                    <span className="text-muted-foreground">Gender</span>
+                    <span className="font-medium text-foreground">{event.gender}</span>
                   </div>
                 )}
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-muted-foreground">Type:</span>
-                  <span className="font-medium text-foreground dark:text-foreground">{event.eventType}</span>
+                <div className="flex justify-between py-1">
+                  <span className="text-muted-foreground">Type</span>
+                  <span className="font-medium text-foreground">{event.eventType}</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <h3 className="font-semibold text-camp-charcoal dark:text-camp-charcoal mb-2">Pricing Options</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Pricing Options</h3>
               <div className="space-y-2 text-sm max-h-40 overflow-y-auto">
                 {event.pricingOptions.map((option, index) => (
-                  <div key={index} className="flex justify-between">
-                    <span className="text-gray-600 dark:text-muted-foreground">{option.name}:</span>
-                    <span className="font-medium text-foreground dark:text-foreground">${option.price}</span>
+                  <div key={index} className="flex justify-between py-1">
+                    <span className="text-muted-foreground">{option.name}</span>
+                    <span className="font-medium text-foreground">${option.price}</span>
                   </div>
                 ))}
               </div>
               
-              <div className="mt-4 p-3 bg-gray-50 dark:bg-muted rounded-lg">
-                <div className="flex justify-between font-semibold">
-                  <span className="text-foreground dark:text-foreground">Price Range:</span>
-                  <span className="text-forest dark:text-forest">
-                    ${minPrice}{minPrice !== maxPrice ? ` - $${maxPrice}` : ''}
+              <div className="mt-4 p-3 bg-muted rounded-md">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium text-foreground">Price Range</span>
+                  <span className="font-semibold text-primary">
+                    ${minPrice}{minPrice !== maxPrice ? ` — $${maxPrice}` : ''}
                   </span>
                 </div>
               </div>
@@ -110,8 +112,8 @@ export function EventModal({ event, onClose }: EventModalProps) {
 
           {event.description && (
             <div className="mt-6">
-              <h3 className="font-semibold text-camp-charcoal dark:text-camp-charcoal mb-2">Description</h3>
-              <p className="text-gray-700 dark:text-muted-foreground text-sm leading-relaxed">
+              <h3 className="text-sm font-semibold text-foreground mb-3">Description</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 {event.description}
               </p>
             </div>

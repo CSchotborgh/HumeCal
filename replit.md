@@ -5,6 +5,7 @@ This is a full-stack web application for displaying and filtering camp events at
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Design preference: GitHub-like layout and design with modern fonts and clean interface styling.
 
 # System Architecture
 

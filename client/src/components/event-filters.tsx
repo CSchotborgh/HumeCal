@@ -72,28 +72,28 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
   };
 
   return (
-    <Card className="sticky top-8">
-      <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-camp-charcoal dark:text-camp-charcoal mb-4">Filter Events</h2>
+    <div className="bg-card border border-border rounded-lg shadow-sm sticky top-24">
+      <div className="p-4">
+        <h2 className="text-sm font-semibold text-foreground mb-4">Filters</h2>
         
         {/* Search */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-2">Search Events</label>
+        <div className="mb-4">
+          <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Search</label>
           <div className="relative">
             <Input
               type="text"
-              placeholder="Search by event name..."
+              placeholder="Filter events..."
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="w-full pr-10"
+              className="w-full pr-8 h-8 text-sm"
             />
-            <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400 dark:text-muted-foreground" />
+            <Search className="absolute right-2 top-2 h-4 w-4 text-muted-foreground" />
           </div>
         </div>
 
         {/* Event Types */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-3">Event Types</label>
+        <div className="mb-4">
+          <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Event Types</label>
           <div className="space-y-2">
             {eventTypes.map(type => (
               <div key={type.name} className="flex items-center space-x-2">
@@ -101,11 +101,12 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
                   id={type.name}
                   checked={filters.eventTypes.includes(type.name)}
                   onCheckedChange={() => handleEventTypeToggle(type.name)}
+                  className="h-4 w-4"
                 />
-                <label htmlFor={type.name} className="flex-1 flex items-center justify-between text-sm text-gray-700 dark:text-foreground cursor-pointer">
+                <label htmlFor={type.name} className="flex-1 flex items-center justify-between text-sm text-foreground cursor-pointer">
                   <span>{type.name}</span>
                   {type.count > 0 && (
-                    <span className={`${type.color} text-white text-xs px-2 py-1 rounded-full`}>
+                    <span className="bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded-md font-medium">
                       {type.count}
                     </span>
                   )}
@@ -116,41 +117,38 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
         </div>
 
         {/* Price Range */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-3">Price Range</label>
-          <div className="flex items-center space-x-4">
+        <div className="mb-4">
+          <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Price Range</label>
+          <div className="flex items-center space-x-2">
             <Input
               type="number"
-              placeholder="$0"
+              placeholder="Min"
               value={filters.priceRange.min || ""}
               onChange={(e) => handlePriceChange('min', parseInt(e.target.value) || 0)}
-              className="flex-1 text-sm"
+              className="flex-1 text-sm h-8"
             />
-            <span className="text-gray-500 dark:text-muted-foreground">to</span>
+            <span className="text-muted-foreground text-sm">—</span>
             <Input
               type="number"
-              placeholder="$600"
+              placeholder="Max"
               value={filters.priceRange.max || ""}
               onChange={(e) => handlePriceChange('max', parseInt(e.target.value) || 1000)}
-              className="flex-1 text-sm"
+              className="flex-1 text-sm h-8"
             />
           </div>
         </div>
 
         {/* Age Groups */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-3">Age Groups</label>
-          <div className="flex flex-wrap gap-2">
+        <div className="mb-4">
+          <label className="block text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wide">Age Groups</label>
+          <div className="flex flex-wrap gap-1">
             {ageGroups.map(ageGroup => (
               <Button
                 key={ageGroup}
                 variant={filters.ageGroups.includes(ageGroup) ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleAgeGroupToggle(ageGroup)}
-                className={filters.ageGroups.includes(ageGroup) 
-                  ? "bg-forest text-white hover:bg-pine" 
-                  : "text-gray-700 dark:text-foreground hover:bg-gray-100 dark:hover:bg-muted"
-                }
+                className="h-7 px-2 text-xs"
               >
                 {ageGroup}
               </Button>
@@ -161,11 +159,11 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
         <Button 
           variant="outline" 
           onClick={clearAllFilters}
-          className="w-full"
+          className="w-full h-8 text-sm"
         >
-          Clear All Filters
+          Clear filters
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

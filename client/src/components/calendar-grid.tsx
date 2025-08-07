@@ -73,27 +73,32 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <div className="grid grid-cols-7 gap-px bg-gray-200 dark:bg-border rounded-lg overflow-hidden">
+    <div className="grid grid-cols-7 border border-border rounded-md overflow-hidden">
       {/* Calendar Headers */}
       {days.map(day => (
-        <div key={day} className="bg-gray-50 dark:bg-muted p-3 text-center">
-          <span className="text-sm font-medium text-gray-700 dark:text-muted-foreground">{day}</span>
+        <div key={day} className="bg-muted p-2 text-center border-b border-border">
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{day}</span>
         </div>
       ))}
 
       {/* Calendar Days */}
       {calendarDays.map((calendarDay, index) => {
         const dayEvents = getEventsForDate(calendarDay.date);
+        const isLastRow = index >= 35;
+        const isLastColumn = (index + 1) % 7 === 0;
         
         return (
           <div 
             key={index}
-            className="bg-white dark:bg-card p-2 min-h-[120px] border-r border-b border-gray-100 dark:border-border relative"
+            className={`bg-background p-2 min-h-[100px] relative hover:bg-muted/50 transition-colors
+              ${!isLastRow ? 'border-b border-border' : ''}
+              ${!isLastColumn ? 'border-r border-border' : ''}
+            `}
           >
-            <span className={`text-sm font-medium ${
+            <span className={`text-sm ${
               calendarDay.isCurrentMonth 
-                ? 'text-gray-900 dark:text-foreground' 
-                : 'text-gray-400 dark:text-muted-foreground'
+                ? 'text-foreground font-medium' 
+                : 'text-muted-foreground'
             }`}>
               {calendarDay.day}
             </span>
@@ -107,11 +112,11 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
                 return (
                   <div
                     key={event.id}
-                    className={`${getEventColor(event.eventType)} text-white text-xs px-2 py-1 rounded cursor-pointer hover:opacity-80 transition-opacity`}
+                    className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-sm cursor-pointer hover:bg-primary/90 transition-colors"
                     onClick={() => onEventClick(event)}
                   >
                     <div className="font-medium truncate">{event.title}</div>
-                    <div className="text-xs opacity-90">
+                    <div className="text-xs opacity-80">
                       ${minPrice}{minPrice !== maxPrice ? `+` : ''}
                     </div>
                   </div>
@@ -120,7 +125,7 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
               
               {/* Show "more" indicator if there are additional events */}
               {dayEvents.length > 2 && (
-                <div className="text-xs text-gray-600 dark:text-muted-foreground px-2">
+                <div className="text-xs text-muted-foreground px-2 py-1">
                   +{dayEvents.length - 2} more
                 </div>
               )}
