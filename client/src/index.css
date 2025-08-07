@@ -3,38 +3,38 @@
 @tailwind utilities;
 
 :root {
-  /* GitHub-inspired color scheme */
-  --background: hsl(0, 0%, 100%);
+  /* GitHub-inspired color scheme with 10% grey contrast */
+  --background: hsl(0, 0%, 90%);
   --foreground: hsl(220, 9%, 6%);
-  --card: hsl(0, 0%, 100%);
+  --card: hsl(0, 0%, 95%);
   --card-foreground: hsl(220, 9%, 6%);
-  --popover: hsl(0, 0%, 100%);
+  --popover: hsl(0, 0%, 95%);
   --popover-foreground: hsl(220, 9%, 6%);
   --primary: hsl(212, 100%, 47%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 88%);
   --secondary-foreground: hsl(220, 9%, 6%);
-  --muted: hsl(210, 40%, 98%);
-  --muted-foreground: hsl(215, 16%, 47%);
-  --accent: hsl(210, 40%, 98%);
+  --muted: hsl(210, 40%, 88%);
+  --muted-foreground: hsl(215, 16%, 40%);
+  --accent: hsl(210, 40%, 88%);
   --accent-foreground: hsl(220, 9%, 6%);
   --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(214, 32%, 91%);
-  --input: hsl(214, 32%, 91%);
+  --border: hsl(214, 32%, 81%);
+  --input: hsl(214, 32%, 81%);
   --ring: hsl(212, 100%, 47%);
   --chart-1: hsl(12, 76%, 61%);
   --chart-2: hsl(173, 58%, 39%);
   --chart-3: hsl(197, 37%, 24%);
   --chart-4: hsl(43, 74%, 66%);
   --chart-5: hsl(27, 87%, 67%);
-  --sidebar: hsl(0, 0%, 100%);
+  --sidebar: hsl(0, 0%, 95%);
   --sidebar-foreground: hsl(220, 9%, 6%);
   --sidebar-primary: hsl(212, 100%, 47%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(210, 40%, 98%);
+  --sidebar-accent: hsl(210, 40%, 88%);
   --sidebar-accent-foreground: hsl(220, 9%, 6%);
-  --sidebar-border: hsl(214, 32%, 91%);
+  --sidebar-border: hsl(214, 32%, 81%);
   --sidebar-ring: hsl(212, 100%, 47%);
   
   /* GitHub system fonts */
@@ -53,7 +53,7 @@
   --tan: hsl(40, 30%, 75%);
   --lake: hsl(212, 100%, 47%);
   --sunset: hsl(16, 100%, 65%);
-  --warm-gray: hsl(210, 40%, 98%);
+  --warm-gray: hsl(210, 40%, 88%);
   --camp-charcoal: hsl(220, 9%, 6%);
 }
 
