@@ -32,7 +32,7 @@ export function EventModal({ event, onClose }: EventModalProps) {
       onClick={handleBackdropClick}
     >
       <div 
-        className="bg-background border border-border rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-background border border-border rounded-lg shadow-lg max-w-4xl w-full max-h-[95vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="border-b border-border px-6 py-4">
@@ -48,84 +48,94 @@ export function EventModal({ event, onClose }: EventModalProps) {
             </Button>
           </div>
         </div>
-        <div className="p-6">
-
+        <div className="p-8">
           <img 
-            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=300" 
             alt="Hume Lake retreat center" 
-            className="w-full h-48 object-cover rounded-lg mb-6"
+            className="w-full h-56 object-cover rounded-lg mb-8"
           />
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-sm font-semibold text-foreground mb-3">Event Details</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between py-1">
-                  <span className="text-muted-foreground">Date</span>
-                  <span className="font-medium text-foreground">
-                    {formatDate(event.startDate)}
-                    {event.endDate !== event.startDate && ` — ${formatDate(event.endDate)}`}
-                  </span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-muted-foreground">Location</span>
-                  <span className="font-medium text-foreground">{event.location}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-muted-foreground">Age Group</span>
-                  <span className="font-medium text-foreground">{event.ageGroup}</span>
-                </div>
-                {event.gender && event.gender !== "Coed" && (
-                  <div className="flex justify-between py-1">
-                    <span className="text-muted-foreground">Gender</span>
-                    <span className="font-medium text-foreground">{event.gender}</span>
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Event Details</h3>
+              <div className="grid md:grid-cols-2 gap-6 text-sm">
+                <div className="space-y-4">
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground font-medium">Date</span>
+                    <span className="font-medium text-foreground">
+                      {formatDate(event.startDate)}
+                      {event.endDate !== event.startDate && ` — ${formatDate(event.endDate)}`}
+                    </span>
                   </div>
-                )}
-                <div className="flex justify-between py-1">
-                  <span className="text-muted-foreground">Type</span>
-                  <span className="font-medium text-foreground">{event.eventType}</span>
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground font-medium">Location</span>
+                    <span className="font-medium text-foreground">{event.location}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground font-medium">Age Group</span>
+                    <span className="font-medium text-foreground">{event.ageGroup}</span>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {event.gender && event.gender !== "Coed" && (
+                    <div className="flex justify-between py-2 border-b border-border">
+                      <span className="text-muted-foreground font-medium">Gender</span>
+                      <span className="font-medium text-foreground">{event.gender}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground font-medium">Type</span>
+                    <span className="font-medium text-foreground">{event.eventType}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground font-medium">Duration</span>
+                    <span className="font-medium text-foreground">
+                      {event.endDate === event.startDate ? "1 Day" : 
+                       `${Math.ceil((new Date(event.endDate).getTime() - new Date(event.startDate).getTime()) / (1000 * 60 * 60 * 24))} Days`}
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              {event.description && (
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">About This Event</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {event.description}
+                  </p>
+                </div>
+              )}
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-foreground mb-3">Pricing Options</h3>
-              <div className="space-y-2 text-sm max-h-40 overflow-y-auto">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Pricing Options</h3>
+              <div className="space-y-3">
                 {event.pricingOptions.map((option, index) => (
-                  <div key={index} className="flex justify-between py-1">
-                    <span className="text-muted-foreground">{option.name}</span>
-                    <span className="font-medium text-foreground">${option.price}</span>
+                  <div key={index} className="flex justify-between py-3 px-4 bg-muted rounded-md">
+                    <span className="text-foreground font-medium">{option.name}</span>
+                    <span className="font-semibold text-foreground">${option.price}</span>
                   </div>
                 ))}
               </div>
               
-              <div className="mt-4 p-3 bg-muted rounded-md">
-                <div className="flex justify-between text-sm">
-                  <span className="font-medium text-foreground">Price Range</span>
-                  <span className="font-semibold text-primary">
+              <div className="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-md">
+                <div className="flex justify-between text-base">
+                  <span className="font-semibold text-foreground">Price Range</span>
+                  <span className="font-bold text-primary text-lg">
                     ${minPrice}{minPrice !== maxPrice ? ` — $${maxPrice}` : ''}
                   </span>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {event.description && (
-            <div className="mt-6">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Description</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {event.description}
-              </p>
+              <div className="mt-6 space-y-3">
+                <Button className="w-full bg-primary text-primary-foreground font-medium py-3 px-4 rounded-md hover:bg-primary/90 transition-colors">
+                  Register Now
+                </Button>
+                <Button variant="outline" className="w-full font-medium py-3 px-4 rounded-md hover:bg-muted transition-colors">
+                  Learn More
+                </Button>
+              </div>
             </div>
-          )}
-
-          <div className="mt-6 flex space-x-4">
-            <Button className="flex-1 bg-forest text-white hover:bg-pine">
-              Register Now
-            </Button>
-            <Button variant="outline" className="px-6">
-              Save Event
-            </Button>
           </div>
         </div>
       </div>
