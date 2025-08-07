@@ -61,13 +61,18 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
     });
   };
 
-  const getEventColor = (eventType: string) => {
-    if (eventType.includes("Women")) return "bg-lake";
-    if (eventType.includes("Men") || eventType.includes("Pastor")) return "bg-earth";
-    if (eventType.includes("Family")) return "bg-forest";
-    if (eventType.includes("Young")) return "bg-sunset";
-    if (eventType.includes("Creative")) return "bg-purple-600";
-    return "bg-pine";
+  const getEventColor = (eventType: string, title: string) => {
+    // Check both event type and title for better matching
+    const text = `${eventType} ${title}`.toLowerCase();
+    
+    if (text.includes("women") || text.includes("ladies")) return "bg-pink-500 text-white";
+    if (text.includes("men") || text.includes("pastor") || text.includes("father")) return "bg-blue-600 text-white";
+    if (text.includes("family")) return "bg-green-600 text-white";
+    if (text.includes("young") || text.includes("youth") || text.includes("teen")) return "bg-orange-500 text-white";
+    if (text.includes("creative") || text.includes("art")) return "bg-purple-600 text-white";
+    if (text.includes("adventure") || text.includes("outdoor")) return "bg-teal-600 text-white";
+    if (text.includes("senior") || text.includes("adult")) return "bg-indigo-600 text-white";
+    return "bg-primary text-primary-foreground";
   };
 
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -112,7 +117,7 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
                 return (
                   <div
                     key={event.id}
-                    className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-sm cursor-pointer hover:bg-primary/90 transition-colors"
+                    className={`${getEventColor(event.eventType, event.title)} text-xs px-2 py-1 rounded-sm cursor-pointer hover:opacity-90 transition-opacity`}
                     onClick={() => onEventClick(event)}
                   >
                     <div className="font-medium truncate">{event.title}</div>

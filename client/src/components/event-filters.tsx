@@ -20,14 +20,16 @@ interface EventFiltersProps {
 
 export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: EventFiltersProps) {
   const eventTypes = [
-    { name: "Family Event", color: "bg-forest", count: eventTypeCounts["Family Event"] || 0 },
-    { name: "Women's Retreat", color: "bg-lake", count: eventTypeCounts["Women's Retreat"] || 0 },
-    { name: "Men's Retreat", color: "bg-earth", count: eventTypeCounts["Men's Retreat"] || 0 },
-    { name: "Pastor Retreat", color: "bg-earth", count: eventTypeCounts["Pastor Retreat"] || 0 },
-    { name: "Young Adults", color: "bg-sunset", count: eventTypeCounts["Young Adults"] || 0 },
-    { name: "Youth Leaders", color: "bg-sunset", count: eventTypeCounts["Youth Leaders"] || 0 },
+    { name: "Family Event", color: "bg-green-600", count: eventTypeCounts["Family Event"] || 0 },
+    { name: "Women's Retreat", color: "bg-pink-500", count: eventTypeCounts["Women's Retreat"] || 0 },
+    { name: "Men's Retreat", color: "bg-blue-600", count: eventTypeCounts["Men's Retreat"] || 0 },
+    { name: "Pastor Retreat", color: "bg-blue-600", count: eventTypeCounts["Pastor Retreat"] || 0 },
+    { name: "Young Adults", color: "bg-orange-500", count: eventTypeCounts["Young Adults"] || 0 },
+    { name: "Youth Leaders", color: "bg-orange-500", count: eventTypeCounts["Youth Leaders"] || 0 },
     { name: "Creative Arts", color: "bg-purple-600", count: eventTypeCounts["Creative Arts"] || 0 },
-    { name: "Marriage Retreat", color: "bg-pine", count: eventTypeCounts["Marriage Retreat"] || 0 }
+    { name: "Marriage Retreat", color: "bg-primary", count: eventTypeCounts["Marriage Retreat"] || 0 },
+    { name: "Adventure Camp", color: "bg-teal-600", count: eventTypeCounts["Adventure Camp"] || 0 },
+    { name: "Adult Conference", color: "bg-indigo-600", count: eventTypeCounts["Adult Conference"] || 0 }
   ];
 
   const ageGroups = [
