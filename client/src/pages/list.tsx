@@ -5,7 +5,8 @@ import { EventModal } from "@/components/event-modal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, Clock } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, Grid3X3 } from "lucide-react";
+import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
 interface CalendarFilters {
@@ -63,7 +64,7 @@ export function ListPage() {
     const matchesSearch = !filters.search || 
       event.title.toLowerCase().includes(filters.search.toLowerCase()) ||
       event.eventType.toLowerCase().includes(filters.search.toLowerCase()) ||
-      event.location.toLowerCase().includes(filters.search.toLowerCase());
+      (event.location && event.location.toLowerCase().includes(filters.search.toLowerCase()));
 
     const matchesEventType = filters.eventTypes.length === 0 || 
       filters.eventTypes.includes(event.eventType);
@@ -123,6 +124,34 @@ export function ListPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="bg-background border-b border-border sticky top-0 z-40 backdrop-blur">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+                <span className="text-primary-foreground font-semibold text-sm">HL</span>
+              </div>
+              <div>
+                <h1 className="text-lg font-semibold text-foreground">Hume Lake Christian Camps</h1>
+                <p className="text-xs text-muted-foreground">Events List 2025-2026</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="flex space-x-1">
+                <Link href="/">
+                  <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                    <Grid3X3 className="w-4 h-4" />
+                    <span>Month</span>
+                  </Button>
+                </Link>
+                <Button size="sm" variant="default">List</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-foreground mb-2">Camp Events List</h1>
@@ -183,7 +212,7 @@ export function ListPage() {
                               </div>
                               <div className="flex items-center space-x-2">
                                 <MapPin className="w-4 h-4" />
-                                <span>{event.location}</span>
+                                <span>{event.location || 'TBA'}</span>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <Users className="w-4 h-4" />
