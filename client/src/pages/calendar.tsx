@@ -6,7 +6,8 @@ import { EventModal } from "@/components/event-modal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
+import { Search, ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
 import type { Event } from "@shared/schema";
 
 interface CalendarFilters {
@@ -17,6 +18,7 @@ interface CalendarFilters {
 }
 
 export default function Calendar() {
+  const { theme, toggleTheme } = useTheme();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -100,19 +102,19 @@ export default function Calendar() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-warm-gray flex items-center justify-center">
+      <div className="min-h-screen bg-warm-gray dark:bg-warm-gray flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-forest mx-auto mb-4"></div>
-          <p className="text-camp-charcoal">Loading events...</p>
+          <p className="text-camp-charcoal dark:text-camp-charcoal">Loading events...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-warm-gray">
+    <div className="min-h-screen bg-warm-gray dark:bg-warm-gray">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white dark:bg-card shadow-sm border-b border-gray-200 dark:border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
@@ -122,14 +124,26 @@ export default function Calendar() {
                 className="w-12 h-12 rounded-lg object-cover"
               />
               <div>
-                <h1 className="text-xl font-bold text-forest">Hume Lake Christian Camps</h1>
-                <p className="text-sm text-gray-600">Events Calendar 2025-2026</p>
+                <h1 className="text-xl font-bold text-forest dark:text-forest">Hume Lake Christian Camps</h1>
+                <p className="text-sm text-gray-600 dark:text-muted-foreground">Events Calendar 2025-2026</p>
               </div>
             </div>
-            <nav className="hidden md:flex space-x-6">
-              <a href="#" className="text-gray-700 hover:text-forest transition-colors">Summer Camps</a>
-              <a href="#" className="text-gray-700 hover:text-forest transition-colors">Retreats</a>
-              <a href="#" className="text-gray-700 hover:text-forest transition-colors">Contact</a>
+            <nav className="hidden md:flex items-center space-x-6">
+              <a href="#" className="text-gray-700 dark:text-muted-foreground hover:text-forest dark:hover:text-forest transition-colors">Summer Camps</a>
+              <a href="#" className="text-gray-700 dark:text-muted-foreground hover:text-forest dark:hover:text-forest transition-colors">Retreats</a>
+              <a href="#" className="text-gray-700 dark:text-muted-foreground hover:text-forest dark:hover:text-forest transition-colors">Contact</a>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="mr-2"
+              >
+                {theme === "light" ? (
+                  <Moon className="h-5 w-5" />
+                ) : (
+                  <Sun className="h-5 w-5" />
+                )}
+              </Button>
               <Button className="bg-forest text-white hover:bg-pine">Register</Button>
             </nav>
           </div>
@@ -162,7 +176,7 @@ export default function Calendar() {
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </Button>
-                    <h2 className="text-2xl font-bold text-camp-charcoal">{currentMonthName}</h2>
+                    <h2 className="text-2xl font-bold text-camp-charcoal dark:text-camp-charcoal">{currentMonthName}</h2>
                     <Button
                       variant="ghost"
                       size="icon"
@@ -189,31 +203,31 @@ export default function Calendar() {
             {/* Event Legend */}
             <Card className="mb-6">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-camp-charcoal mb-4">Event Types</h3>
+                <h3 className="text-lg font-semibold text-camp-charcoal dark:text-camp-charcoal mb-4">Event Types</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-forest rounded"></div>
-                    <span className="text-sm text-gray-700">Family Events</span>
+                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Family Events</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-lake rounded"></div>
-                    <span className="text-sm text-gray-700">Women's Retreats</span>
+                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Women's Retreats</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-earth rounded"></div>
-                    <span className="text-sm text-gray-700">Men's/Pastors</span>
+                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Men's/Pastors</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-sunset rounded"></div>
-                    <span className="text-sm text-gray-700">Youth Programs</span>
+                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Youth Programs</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-purple-600 rounded"></div>
-                    <span className="text-sm text-gray-700">Creative Arts</span>
+                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Creative Arts</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-4 h-4 bg-pine rounded"></div>
-                    <span className="text-sm text-gray-700">Marriage Retreats</span>
+                    <span className="text-sm text-gray-700 dark:text-muted-foreground">Marriage Retreats</span>
                   </div>
                 </div>
               </CardContent>
@@ -222,7 +236,7 @@ export default function Calendar() {
             {/* Upcoming Events List */}
             <Card>
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-camp-charcoal mb-4">Upcoming Events</h3>
+                <h3 className="text-lg font-semibold text-camp-charcoal dark:text-camp-charcoal mb-4">Upcoming Events</h3>
                 <div className="space-y-4">
                   {filteredEvents.slice(0, 5).map(event => {
                     const minPrice = Math.min(...event.pricingOptions.map(p => p.price));
@@ -231,7 +245,7 @@ export default function Calendar() {
                     return (
                       <div 
                         key={event.id}
-                        className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                        className="border border-gray-200 dark:border-border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
                         onClick={() => handleEventClick(event)}
                       >
                         <div className="flex items-center justify-between">
@@ -245,8 +259,8 @@ export default function Calendar() {
                               "bg-pine"
                             }`}></div>
                             <div>
-                              <h4 className="font-medium text-camp-charcoal">{event.title}</h4>
-                              <p className="text-sm text-gray-600">
+                              <h4 className="font-medium text-camp-charcoal dark:text-camp-charcoal">{event.title}</h4>
+                              <p className="text-sm text-gray-600 dark:text-muted-foreground">
                                 {new Date(event.startDate).toLocaleDateString('en-US', { 
                                   month: 'long', 
                                   day: 'numeric', 
@@ -263,10 +277,10 @@ export default function Calendar() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-medium text-camp-charcoal">
+                            <p className="font-medium text-camp-charcoal dark:text-camp-charcoal">
                               ${minPrice}{minPrice !== maxPrice ? ` - $${maxPrice}` : ''}
                             </p>
-                            <p className="text-sm text-gray-600">{event.ageGroup} {event.gender !== "Coed" ? `• ${event.gender}` : ""}</p>
+                            <p className="text-sm text-gray-600 dark:text-muted-foreground">{event.ageGroup} {event.gender !== "Coed" ? `• ${event.gender}` : ""}</p>
                           </div>
                         </div>
                       </div>

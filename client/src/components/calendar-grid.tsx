@@ -73,11 +73,11 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
+    <div className="grid grid-cols-7 gap-px bg-gray-200 dark:bg-border rounded-lg overflow-hidden">
       {/* Calendar Headers */}
       {days.map(day => (
-        <div key={day} className="bg-gray-50 p-3 text-center">
-          <span className="text-sm font-medium text-gray-700">{day}</span>
+        <div key={day} className="bg-gray-50 dark:bg-muted p-3 text-center">
+          <span className="text-sm font-medium text-gray-700 dark:text-muted-foreground">{day}</span>
         </div>
       ))}
 
@@ -88,10 +88,12 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
         return (
           <div 
             key={index}
-            className="bg-white p-2 min-h-[120px] border-r border-b border-gray-100 relative"
+            className="bg-white dark:bg-card p-2 min-h-[120px] border-r border-b border-gray-100 dark:border-border relative"
           >
             <span className={`text-sm font-medium ${
-              calendarDay.isCurrentMonth ? 'text-gray-900' : 'text-gray-400'
+              calendarDay.isCurrentMonth 
+                ? 'text-gray-900 dark:text-foreground' 
+                : 'text-gray-400 dark:text-muted-foreground'
             }`}>
               {calendarDay.day}
             </span>
@@ -118,7 +120,7 @@ export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGrid
               
               {/* Show "more" indicator if there are additional events */}
               {dayEvents.length > 2 && (
-                <div className="text-xs text-gray-600 px-2">
+                <div className="text-xs text-gray-600 dark:text-muted-foreground px-2">
                   +{dayEvents.length - 2} more
                 </div>
               )}

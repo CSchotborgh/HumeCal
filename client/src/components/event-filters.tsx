@@ -74,11 +74,11 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
   return (
     <Card className="sticky top-8">
       <CardContent className="p-6">
-        <h2 className="text-lg font-semibold text-camp-charcoal mb-4">Filter Events</h2>
+        <h2 className="text-lg font-semibold text-camp-charcoal dark:text-camp-charcoal mb-4">Filter Events</h2>
         
         {/* Search */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Search Events</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-2">Search Events</label>
           <div className="relative">
             <Input
               type="text"
@@ -87,13 +87,13 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
               onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full pr-10"
             />
-            <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+            <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400 dark:text-muted-foreground" />
           </div>
         </div>
 
         {/* Event Types */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-3">Event Types</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-3">Event Types</label>
           <div className="space-y-2">
             {eventTypes.map(type => (
               <div key={type.name} className="flex items-center space-x-2">
@@ -102,7 +102,7 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
                   checked={filters.eventTypes.includes(type.name)}
                   onCheckedChange={() => handleEventTypeToggle(type.name)}
                 />
-                <label htmlFor={type.name} className="flex-1 flex items-center justify-between text-sm text-gray-700 cursor-pointer">
+                <label htmlFor={type.name} className="flex-1 flex items-center justify-between text-sm text-gray-700 dark:text-foreground cursor-pointer">
                   <span>{type.name}</span>
                   {type.count > 0 && (
                     <span className={`${type.color} text-white text-xs px-2 py-1 rounded-full`}>
@@ -117,7 +117,7 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
 
         {/* Price Range */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-3">Price Range</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-3">Price Range</label>
           <div className="flex items-center space-x-4">
             <Input
               type="number"
@@ -126,7 +126,7 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
               onChange={(e) => handlePriceChange('min', parseInt(e.target.value) || 0)}
               className="flex-1 text-sm"
             />
-            <span className="text-gray-500">to</span>
+            <span className="text-gray-500 dark:text-muted-foreground">to</span>
             <Input
               type="number"
               placeholder="$600"
@@ -139,7 +139,7 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
 
         {/* Age Groups */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-3">Age Groups</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-muted-foreground mb-3">Age Groups</label>
           <div className="flex flex-wrap gap-2">
             {ageGroups.map(ageGroup => (
               <Button
@@ -149,7 +149,7 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
                 onClick={() => handleAgeGroupToggle(ageGroup)}
                 className={filters.ageGroups.includes(ageGroup) 
                   ? "bg-forest text-white hover:bg-pine" 
-                  : "text-gray-700 hover:bg-gray-100"
+                  : "text-gray-700 dark:text-foreground hover:bg-gray-100 dark:hover:bg-muted"
                 }
               >
                 {ageGroup}
