@@ -229,14 +229,14 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-06-08",
         endDate: "2025-06-14",
         eventType: "Summer Camp",
-        description: "The gospel isn't merely one ingredient in our programming mix. It's the reason for everything we do. Experience creative theme, dynamic worship, innovative recreation, and amazing mountain activities.",
+        description: "The gospel isn't merely one ingredient in our programming mix. It's the reason for everything we do. Experience creative theme, dynamic worship, innovative recreation, and amazing mountain activities. Speaker: Jeff Sanford. Contact us about FREE counselors!",
         ageGroup: "11-18",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
         pricingOptions: [
           { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle & High School)" },
           { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle & High School)" },
-          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+          { name: "Counselor Fee (FREE)", price: 0, description: "Contact us about FREE counselors!" }
         ]
       },
       {
@@ -244,7 +244,7 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-06-15",
         endDate: "2025-06-21",
         eventType: "Summer Camp",
-        description: "A week specifically designed for middle school students with age-appropriate activities, worship, and teaching focused on their spiritual development.",
+        description: "A week specifically designed for middle school students with age-appropriate activities, worship, and teaching focused on their spiritual development. Speaker: Kellen Drewry. FILLING FAST!",
         ageGroup: "11-14",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
@@ -259,7 +259,7 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-06-22",
         endDate: "2025-06-28",
         eventType: "Summer Camp",
-        description: "Another dedicated middle school week featuring creative theme programming, high-energy recreation, and meaningful spiritual growth opportunities.",
+        description: "Another dedicated middle school week featuring creative theme programming, high-energy recreation, and meaningful spiritual growth opportunities. Speaker: Jake Ellis. JOIN THE WAITLIST!",
         ageGroup: "11-14",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
@@ -274,14 +274,14 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-06-29",
         endDate: "2025-07-05",
         eventType: "Summer Camp",
-        description: "Special discounted week for both middle and high school students! Experience the full Hume SoCal summer camp program at half price.",
+        description: "Special discounted week for both middle and high school students! Experience the full Hume SoCal summer camp program at half price. Speaker: Mikey Portis. Contact us about FREE counselors!",
         ageGroup: "11-18",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
         pricingOptions: [
           { name: "You Bring a Counselor (50% OFF)", price: 444, description: "Per camper - SPECIAL DISCOUNT" },
           { name: "We Provide a Counselor (50% OFF)", price: 485, description: "Per camper - SPECIAL DISCOUNT" },
-          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+          { name: "Counselor Fee (FREE)", price: 0, description: "Contact us about FREE counselors!" }
         ]
       },
       {
@@ -289,7 +289,7 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-07-06",
         endDate: "2025-07-12",
         eventType: "Summer Camp",
-        description: "A high-energy week designed specifically for high school students with challenging teaching, exciting activities, and opportunities for spiritual growth.",
+        description: "A high-energy week designed specifically for high school students with challenging teaching, exciting activities, and opportunities for spiritual growth. Speaker: David Rimestad.",
         ageGroup: "14-18",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
@@ -304,7 +304,7 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-07-13",
         endDate: "2025-07-19",
         eventType: "Summer Camp",
-        description: "Another dedicated high school week featuring dynamic worship, innovative recreation, and Gospel-centered teaching tailored for teens.",
+        description: "Another dedicated high school week featuring dynamic worship, innovative recreation, and Gospel-centered teaching tailored for teens. Speaker: Darin McWatters. FILLING FAST!",
         ageGroup: "14-18",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
@@ -319,7 +319,7 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-07-20",
         endDate: "2025-07-26",
         eventType: "Summer Camp",
-        description: "Final middle school week of the summer featuring all the classic Hume SoCal programming with creative theme and exciting activities.",
+        description: "Final middle school week of the summer featuring all the classic Hume SoCal programming with creative theme and exciting activities. Speaker: Brian Holland.",
         ageGroup: "11-14",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
@@ -334,14 +334,114 @@ export class DatabaseStorage implements IStorage {
         startDate: "2025-08-03",
         endDate: "2025-08-09",
         eventType: "Summer Camp",
-        description: "Final summer camp week for both middle and high school students featuring the Alvalldr theme and all the amazing Hume SoCal programming.",
+        description: "Final summer camp week for both middle and high school students featuring the Alvalldr theme and all the amazing Hume SoCal programming. Speaker: Josiah Crews. Contact us about FREE counselors!",
         ageGroup: "11-18",
         gender: "Coed",
         location: "Hume SoCal, Green Valley Lake, CA",
         pricingOptions: [
           { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle & High School)" },
           { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle & High School)" },
-          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+          { name: "Counselor Fee (FREE)", price: 0, description: "Contact us about FREE counselors!" }
+        ]
+      },
+
+      // === HUME SOCAL WINTER CAMP 2026 EVENTS ===
+      {
+        title: "Middle School Winter Camp 3-Night",
+        startDate: "2026-01-16",
+        endDate: "2026-01-19",
+        eventType: "Winter Camp",
+        description: "A 3-night winter camp experience for middle school students featuring snow activities, dynamic worship, and inspiring teaching. Speaker: Kellen Drewry.",
+        ageGroup: "11-14",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (3-Night)", price: 450, description: "Per camper (Middle School)" },
+          { name: "Counselor Fee", price: 159, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Middle School Winter Camp",
+        startDate: "2026-01-23",
+        endDate: "2026-01-25",
+        eventType: "Winter Camp",
+        description: "A 2-night winter camp experience for middle school students with snow activities and spiritual growth opportunities. Speaker: Mike Szoradi.",
+        ageGroup: "11-14",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (2-Night)", price: 400, description: "Per camper (Middle School)" },
+          { name: "Counselor Fee", price: 129, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "High School Winter Camp",
+        startDate: "2026-01-30",
+        endDate: "2026-02-01",
+        eventType: "Winter Camp",
+        description: "A 2-night winter camp designed for high school students featuring snow sports, worship, and challenging biblical teaching. Speaker: Rich Baker.",
+        ageGroup: "14-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (2-Night)", price: 400, description: "Per camper (High School)" },
+          { name: "Counselor Fee", price: 129, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Middle School Winter Camp",
+        startDate: "2026-02-06",
+        endDate: "2026-02-08",
+        eventType: "Winter Camp",
+        description: "Another 2-night middle school winter camp with snow activities, group games, and meaningful spiritual discussions. Speaker: Stevy York.",
+        ageGroup: "11-14",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (2-Night)", price: 400, description: "Per camper (Middle School)" },
+          { name: "Counselor Fee", price: 129, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "High School Winter Camp 3-Night",
+        startDate: "2026-02-13",
+        endDate: "2026-02-16",
+        eventType: "Winter Camp",
+        description: "A 3-night winter camp for high school students with extended time for snow sports, deeper spiritual conversations, and community building. Speaker: TBD.",
+        ageGroup: "14-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (3-Night)", price: 450, description: "Per camper (High School)" },
+          { name: "Counselor Fee", price: 159, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Combined Winter Camp",
+        startDate: "2026-02-20",
+        endDate: "2026-02-22",
+        eventType: "Winter Camp",
+        description: "A 2-night combined winter camp for both middle and high school students with snow activities and inspiring teaching. Speaker: Spencer Osborn.",
+        ageGroup: "11-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (2-Night)", price: 400, description: "Per camper (Middle & High School)" },
+          { name: "Counselor Fee", price: 129, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Combined Winter Camp",
+        startDate: "2026-02-27",
+        endDate: "2026-03-01",
+        eventType: "Winter Camp",
+        description: "Final 2-night combined winter camp of the season for middle and high school students. Speaker: Tony Landini.",
+        ageGroup: "11-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "Camper (2-Night)", price: 400, description: "Per camper (Middle & High School)" },
+          { name: "Counselor Fee", price: 129, description: "Per counselor you bring" }
         ]
       },
       {

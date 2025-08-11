@@ -100,7 +100,36 @@ export function EventModal({ event, onClose }: EventModalProps) {
       >
         <div className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
+            <div>
+              <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
+              {event.location?.includes("SoCal") && (
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    Hume SoCal
+                  </span>
+                  {event.description?.includes("FILLING FAST") && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
+                      FILLING FAST
+                    </span>
+                  )}
+                  {event.description?.includes("50% OFF") && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      50% OFF
+                    </span>
+                  )}
+                  {event.description?.includes("WAITLIST") && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                      JOIN WAITLIST
+                    </span>
+                  )}
+                  {event.description?.includes("FREE counselors") && (
+                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
+                      FREE COUNSELORS
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
             <Button
               variant="ghost"
               size="icon"
@@ -163,9 +192,21 @@ export function EventModal({ event, onClose }: EventModalProps) {
               {event.description && (
                 <div className="mt-8">
                   <h3 className="text-lg font-semibold text-foreground mb-4">About This Event</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {event.description}
-                  </p>
+                  <div className="text-muted-foreground leading-relaxed">
+                    {/* Extract speaker information from description for SoCal events */}
+                    {event.location?.includes("SoCal") && event.description?.includes("Speaker:") ? (
+                      <div>
+                        <p className="mb-3">
+                          {event.description.split("Speaker:")[0].trim()}
+                        </p>
+                        <div className="font-medium text-foreground bg-gray-50 dark:bg-gray-800 p-3 rounded-md">
+                          🎤 Speaker: {event.description.split("Speaker:")[1].split(".")[0].trim()}
+                        </div>
+                      </div>
+                    ) : (
+                      <p>{event.description}</p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
