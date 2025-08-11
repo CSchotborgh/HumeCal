@@ -162,6 +162,10 @@ export function ListPage() {
                   <span>List</span>
                 </Button>
               </div>
+              <div className="h-4 w-px bg-border mx-3"></div>
+              <Link href="/contact">
+                <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
+              </Link>
             </div>
           </div>
         </div>
