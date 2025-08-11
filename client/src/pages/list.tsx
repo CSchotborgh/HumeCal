@@ -5,7 +5,7 @@ import { EventModal } from "@/components/event-modal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar as CalendarIcon, MapPin, Users, Clock, Grid3X3, List as ListIcon } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Users, Clock, Grid3X3, List as ListIcon, Printer } from "lucide-react";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -100,6 +100,10 @@ export function ListPage() {
     setSelectedEvent(null);
   };
 
+  const printList = () => {
+    window.print();
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
@@ -123,7 +127,7 @@ export function ListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background print-list-view">
       {/* Header */}
       <header className="bg-background border-b border-border sticky top-0 z-40 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -160,6 +164,15 @@ export function ListPage() {
                 <Button size="sm" variant="default" className="flex items-center space-x-1">
                   <ListIcon className="w-4 h-4" />
                   <span>List</span>
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={printList}
+                  className="flex items-center space-x-1 print:hidden"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print</span>
                 </Button>
               </div>
               <div className="h-4 w-px bg-border mx-3"></div>
@@ -208,7 +221,7 @@ export function ListPage() {
                   const maxPrice = Math.max(...event.pricingOptions.map(p => p.price));
 
                   return (
-                    <Card key={event.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                    <Card key={event.id} className="hover:shadow-md transition-shadow cursor-pointer list-event-card">
                       <CardContent className="p-6" onClick={() => openModal(event)}>
                         <div className="flex items-start justify-between">
                           <div className="flex-1">

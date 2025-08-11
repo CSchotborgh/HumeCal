@@ -5,7 +5,7 @@ import { EventFilters } from "@/components/event-filters";
 import { EventModal } from "@/components/event-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, List, ChevronLeft, ChevronRight, Grid3X3 } from "lucide-react";
+import { Calendar, List, ChevronLeft, ChevronRight, Grid3X3, Printer } from "lucide-react";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -73,6 +73,10 @@ export default function WeekPage() {
     return "bg-gray-500";
   };
 
+  const printWeek = () => {
+    window.print();
+  };
+
   const navigateWeek = (direction: "prev" | "next") => {
     setCurrentWeek(prev => direction === "next" ? addWeeks(prev, 1) : subWeeks(prev, 1));
   };
@@ -93,7 +97,7 @@ export default function WeekPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background print-week-view">
       {/* Header */}
       <header className="bg-background border-b border-border sticky top-0 z-40 backdrop-blur">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -130,6 +134,15 @@ export default function WeekPage() {
                   </Button>
                 </Link>
                 <Button size="sm" variant="default">Week</Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={printWeek}
+                  className="flex items-center space-x-1 print:hidden"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print</span>
+                </Button>
               </div>
               <div className="h-4 w-px bg-border mx-3"></div>
               <Link href="/contact">
@@ -197,7 +210,7 @@ export default function WeekPage() {
                 const isCurrentDay = isToday(day);
 
                 return (
-                  <div key={day.toISOString()} className="min-h-[200px]">
+                  <div key={day.toISOString()} className="min-h-[200px] week-day-column">
                     <div className={`
                       bg-card border border-border rounded-lg overflow-hidden h-full
                       ${isCurrentDay ? "ring-2 ring-primary" : ""}
