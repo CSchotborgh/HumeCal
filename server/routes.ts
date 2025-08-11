@@ -2,9 +2,34 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { checkDatabaseConnection } from "./db";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint
+  app.get('/health', async (_req, res) => {
+    try {
+      const isDatabaseHealthy = await checkDatabaseConnection();
+      const health = {
+        status: isDatabaseHealthy ? 'healthy' : 'unhealthy',
+        timestamp: new Date().toISOString(),
+        database: isDatabaseHealthy ? 'connected' : 'disconnected',
+        uptime: process.uptime(),
+        environment: process.env.NODE_ENV || 'development'
+      };
+      
+      const statusCode = isDatabaseHealthy ? 200 : 503;
+      res.status(statusCode).json(health);
+    } catch (error) {
+      res.status(503).json({
+        status: 'unhealthy',
+        timestamp: new Date().toISOString(),
+        error: 'Health check failed',
+        uptime: process.uptime()
+      });
+    }
+  });
+
   // Auth middleware
   await setupAuth(app);
 
@@ -26,7 +51,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const events = await storage.getEvents();
       res.json(events);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch events" });
+      console.error("Error fetching events:", error);
+      res.status(500).json({ 
+        message: "Failed to fetch events",
+        error: process.env.NODE_ENV === "development" ? String(error) : undefined
+      });
     }
   });
 

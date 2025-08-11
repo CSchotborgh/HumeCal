@@ -43,10 +43,13 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   constructor() {
-    this.seedEvents();
+    // Seed events asynchronously to avoid blocking initialization
+    this.seedEvents().catch(error => {
+      console.error("Failed to seed events during initialization:", error);
+    });
   }
 
-  private seedEvents() {
+  private async seedEvents() {
     // Real Hume Lake events for 2025-2026 based on the registration data
     const eventsData: InsertEvent[] = [
       {
@@ -68,7 +71,7 @@ export class DatabaseStorage implements IStorage {
           { name: "Single Family Housing without bathroom Child", price: 359, description: "Ages 8 to 17" },
           { name: "Shared Family Housing Child", price: 344, description: "Ages 8 to 17" },
           { name: "RV Housing Child", price: 329, description: "Ages 8 to 17" }
-        ]
+        ] as PricingOption[]
       },
       {
         title: "Rest and Renew - Pastors Retreat",
@@ -255,25 +258,31 @@ export class DatabaseStorage implements IStorage {
     ];
 
     // This will seed events only if the events table is empty
-    this.seedEventsToDatabase(eventsData);
+    await this.seedEventsToDatabase(eventsData);
   }
 
   private async seedEventsToDatabase(eventsData: InsertEvent[]) {
     try {
       const existingEvents = await db.select().from(events).limit(1);
       if (existingEvents.length === 0) {
+        console.log("Seeding events to database...");
         // Insert events one by one to handle type issues better
+        let successCount = 0;
         for (const eventData of eventsData) {
           try {
-            await db.insert(events).values(eventData);
+            await db.insert(events).values([eventData]);
+            successCount++;
           } catch (insertError) {
             console.error(`Error inserting event ${eventData.title}:`, insertError);
           }
         }
-        console.log("Seeded events to database");
+        console.log(`Successfully seeded ${successCount} events to database`);
+      } else {
+        console.log("Events already exist in database, skipping seed");
       }
     } catch (error) {
-      console.error("Error seeding events:", error);
+      console.error("Error checking/seeding events:", error);
+      // Don't throw here to avoid blocking server startup
     }
   }
 
