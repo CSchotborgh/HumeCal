@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { EventFilters } from "@/components/event-filters";
 import { EventModal } from "@/components/event-modal";
+import { useMobileOrientation } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ interface CalendarFilters {
 }
 
 export function ListPage() {
+  const { isMobile, isPortrait, isLandscape } = useMobileOrientation();
   const [filters, setFilters] = useState<CalendarFilters>({
     search: "",
     eventTypes: [],
@@ -141,29 +143,43 @@ export function ListPage() {
                 <p className="text-xs text-muted-foreground">Events List 2025-2026</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex space-x-1">
+            <div className={`
+              ${isPortrait 
+                ? 'flex flex-col space-y-2' 
+                : isLandscape 
+                  ? 'flex flex-col space-y-1' 
+                  : 'flex items-center space-x-4'
+              }
+            `}>
+              <div className={`
+                ${isPortrait 
+                  ? 'mobile-portrait-nav mobile-nav-portrait' 
+                  : isLandscape 
+                    ? 'mobile-landscape-nav mobile-nav-landscape' 
+                    : 'flex space-x-1'
+                }
+              `}>
                 <Link href="/">
                   <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                     <Grid3X3 className="w-4 h-4" />
-                    <span>Month</span>
+                    <span className={isPortrait ? "hidden" : ""}>Month</span>
                   </Button>
                 </Link>
                 <Link href="/week">
                   <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                     <CalendarIcon className="w-4 h-4" />
-                    <span>Week</span>
+                    <span className={isPortrait ? "hidden" : ""}>Week</span>
                   </Button>
                 </Link>
                 <Link href="/year">
                   <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                     <CalendarIcon className="w-4 h-4" />
-                    <span>Year</span>
+                    <span className={isPortrait ? "hidden" : ""}>Year</span>
                   </Button>
                 </Link>
                 <Button size="sm" variant="default" className="flex items-center space-x-1">
                   <ListIcon className="w-4 h-4" />
-                  <span>List</span>
+                  <span className={isPortrait ? "hidden" : ""}>List</span>
                 </Button>
                 <Button 
                   size="sm" 
@@ -172,13 +188,17 @@ export function ListPage() {
                   className="flex items-center space-x-1 print:hidden"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>Print</span>
+                  <span className={isPortrait ? "hidden" : ""}>Print</span>
                 </Button>
               </div>
-              <div className="h-4 w-px bg-border mx-3"></div>
-              <Link href="/contact">
-                <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
-              </Link>
+              {!isMobile && (
+                <>
+                  <div className="h-4 w-px bg-border mx-3"></div>
+                  <Link href="/contact">
+                    <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

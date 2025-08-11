@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format, startOfYear, endOfYear, eachMonthOfInterval, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addYears, subYears } from "date-fns";
 import { EventFilters } from "@/components/event-filters";
 import { EventModal } from "@/components/event-modal";
+import { useMobileOrientation } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Calendar, List, ChevronLeft, ChevronRight, Grid3X3, Printer } from "lucide-react";
 import { Link } from "wouter";
@@ -18,6 +19,7 @@ interface CalendarFilters {
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default function YearPage() {
+  const { isMobile, isPortrait, isLandscape } = useMobileOrientation();
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [filters, setFilters] = useState<CalendarFilters>({
@@ -194,21 +196,44 @@ export default function YearPage() {
                 <p className="text-xs text-muted-foreground">Year View {currentYear}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex space-x-1">
+            <div className={`
+              ${isPortrait 
+                ? 'flex flex-col space-y-2' 
+                : isLandscape 
+                  ? 'flex flex-col space-y-1' 
+                  : 'flex items-center space-x-4'
+              }
+            `}>
+              <div className={`
+                ${isPortrait 
+                  ? 'mobile-portrait-nav mobile-nav-portrait' 
+                  : isLandscape 
+                    ? 'mobile-landscape-nav mobile-nav-landscape' 
+                    : 'flex space-x-1'
+                }
+              `}>
                 <Link href="/">
                   <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                     <Grid3X3 className="w-4 h-4" />
-                    <span>Month</span>
+                    <span className={isPortrait ? "hidden" : ""}>Month</span>
+                  </Button>
+                </Link>
+                <Link href="/week">
+                  <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                    <Calendar className="w-4 h-4" />
+                    <span className={isPortrait ? "hidden" : ""}>Week</span>
                   </Button>
                 </Link>
                 <Link href="/list">
                   <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                     <List className="w-4 h-4" />
-                    <span>List</span>
+                    <span className={isPortrait ? "hidden" : ""}>List</span>
                   </Button>
                 </Link>
-                <Button size="sm" variant="default">Year</Button>
+                <Button size="sm" variant="default">
+                  <span className={isPortrait ? "hidden" : ""}>Year</span>
+                  {isPortrait && <Calendar className="w-4 h-4" />}
+                </Button>
                 <Button 
                   size="sm" 
                   variant="outline" 
@@ -216,13 +241,17 @@ export default function YearPage() {
                   className="flex items-center space-x-1 print:hidden"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>Print</span>
+                  <span className={isPortrait ? "hidden" : ""}>Print</span>
                 </Button>
               </div>
-              <div className="h-4 w-px bg-border mx-3"></div>
-              <Link href="/contact">
-                <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
-              </Link>
+              {!isMobile && (
+                <>
+                  <div className="h-4 w-px bg-border mx-3"></div>
+                  <Link href="/contact">
+                    <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
