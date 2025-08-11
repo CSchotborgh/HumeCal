@@ -1,6 +1,7 @@
-import { Phone, Mail, MapPin, Clock, Users } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Users, ArrowLeft, Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 
 export default function ContactPage() {
   const locations = [
@@ -70,6 +71,20 @@ export default function ContactPage() {
       {/* Header */}
       <header className="bg-card border-b border-border/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-between mb-6">
+            <Link href="/">
+              <Button variant="ghost" size="sm" className="text-sm">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+            <Link href="/">
+              <Button variant="outline" size="sm" className="text-sm">
+                <Calendar className="w-4 h-4 mr-2" />
+                View Calendar
+              </Button>
+            </Link>
+          </div>
           <div className="text-center">
             <h1 className="text-3xl font-bold text-foreground mb-2">Contact Hume Lake Christian Camps</h1>
             <p className="text-lg text-muted-foreground">
