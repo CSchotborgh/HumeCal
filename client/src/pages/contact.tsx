@@ -2,6 +2,7 @@ import { Phone, Mail, MapPin, Clock, Users, ArrowLeft, Calendar } from "lucide-r
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function ContactPage() {
   const locations = [
@@ -78,12 +79,15 @@ export default function ContactPage() {
                 Back
               </Button>
             </Link>
-            <Link href="/">
-              <Button variant="outline" size="sm" className="text-sm">
-                <Calendar className="w-4 h-4 mr-2" />
-                View Calendar
-              </Button>
-            </Link>
+            <div className="flex items-center space-x-3">
+              <ThemeToggle />
+              <Link href="/">
+                <Button variant="outline" size="sm" className="text-sm">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  View Calendar
+                </Button>
+              </Link>
+            </div>
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-bold text-foreground mb-2">Contact Hume Lake Christian Camps</h1>

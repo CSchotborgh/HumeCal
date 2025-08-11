@@ -162,11 +162,11 @@
   }
   
   /* Adjust main content for print */
-  .lg\\:grid-cols-4 {
+  .lg\:grid-cols-4 {
     display: block !important;
   }
   
-  .lg\\:col-span-3 {
+  .lg\:col-span-3 {
     width: 100% !important;
   }
   
@@ -191,7 +191,7 @@
   }
   
   /* Print layout adjustments */
-  .min-h-\\[120px\\] {
+  .min-h-\[120px\] {
     min-height: 80px !important;
   }
   
