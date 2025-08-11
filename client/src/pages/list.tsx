@@ -212,18 +212,9 @@ export function ListPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
-          <div className="lg:col-span-1">
-            <EventFilters
-              filters={filters}
-              onFiltersChange={setFilters}
-              eventTypeCounts={eventTypeCounts}
-            />
-          </div>
-
+        <div className={`${isMobile ? 'flex flex-col gap-6' : 'grid lg:grid-cols-4 gap-8'}`}>
           {/* Events List */}
-          <div className="lg:col-span-3">
+          <div className={`${isMobile ? 'order-1' : 'lg:col-span-3'}`}>
             {sortedEvents.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
@@ -297,6 +288,15 @@ export function ListPage() {
                 })}
               </div>
             )}
+          </div>
+
+          {/* Filters Sidebar - Mobile: Below content, Desktop: Sidebar */}
+          <div className={`${isMobile ? 'order-2' : 'lg:col-span-1'}`}>
+            <EventFilters
+              filters={filters}
+              onFiltersChange={setFilters}
+              eventTypeCounts={eventTypeCounts}
+            />
           </div>
         </div>
       </div>
