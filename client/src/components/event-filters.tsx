@@ -127,6 +127,45 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
               </div>
             ))}
           </div>
+          
+          {/* Color Legend */}
+          <div className="mt-4 pt-4 border-t border-border">
+            <h4 className="text-xs font-medium text-muted-foreground mb-2">Color Legend</h4>
+            <div className="grid grid-cols-1 gap-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-pink-500 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Women's</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-blue-600 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Men's/Pastors</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-600 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Family</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-orange-500 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Youth</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-purple-500 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Marriage/Couples</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-yellow-500 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Creative Arts</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-teal-500 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Retreats</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-gray-500 rounded-sm"></div>
+                <span className="text-xs text-muted-foreground">Other</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Price Range */}

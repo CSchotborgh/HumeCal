@@ -256,40 +256,7 @@ export default function Calendar() {
               </div>
             </div>
 
-            {/* Event Legend */}
-            <div className="bg-card border border-border rounded-lg shadow-sm mb-6">
-              <div className="px-6 py-4 border-b border-border">
-                <h3 className="text-sm font-semibold text-foreground">Event Types</h3>
-              </div>
-              <div className="p-6">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-primary rounded-sm"></div>
-                    <span className="text-sm text-foreground">All Events</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-forest rounded-sm"></div>
-                    <span className="text-sm text-muted-foreground">Family Events</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-lake rounded-sm"></div>
-                    <span className="text-sm text-muted-foreground">Women's Retreats</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-earth rounded-sm"></div>
-                    <span className="text-sm text-muted-foreground">Men's/Pastors</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-sunset rounded-sm"></div>
-                    <span className="text-sm text-muted-foreground">Youth Programs</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-purple-600 rounded-sm"></div>
-                    <span className="text-sm text-muted-foreground">Creative Arts</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+
 
             {/* Upcoming Events List */}
             <div className="bg-card border border-border rounded-lg shadow-sm">
