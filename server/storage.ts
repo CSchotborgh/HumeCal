@@ -270,7 +270,12 @@ export class DatabaseStorage implements IStorage {
         let successCount = 0;
         for (const eventData of eventsData) {
           try {
-            await db.insert(events).values([eventData]);
+            // Ensure pricingOptions is properly typed
+            const eventToInsert = {
+              ...eventData,
+              pricingOptions: eventData.pricingOptions as PricingOption[]
+            };
+            await db.insert(events).values([eventToInsert]);
             successCount++;
           } catch (insertError) {
             console.error(`Error inserting event ${eventData.title}:`, insertError);

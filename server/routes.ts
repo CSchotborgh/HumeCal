@@ -6,27 +6,65 @@ import { checkDatabaseConnection } from "./db";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Health check endpoint
+  // Comprehensive health check endpoint for deployment monitoring
   app.get('/health', async (_req, res) => {
     try {
+      const startTime = Date.now();
       const isDatabaseHealthy = await checkDatabaseConnection();
+      const dbResponseTime = Date.now() - startTime;
+      
       const health = {
         status: isDatabaseHealthy ? 'healthy' : 'unhealthy',
         timestamp: new Date().toISOString(),
-        database: isDatabaseHealthy ? 'connected' : 'disconnected',
-        uptime: process.uptime(),
-        environment: process.env.NODE_ENV || 'development'
+        database: {
+          status: isDatabaseHealthy ? 'connected' : 'disconnected',
+          responseTime: `${dbResponseTime}ms`
+        },
+        server: {
+          uptime: process.uptime(),
+          memory: process.memoryUsage(),
+          environment: process.env.NODE_ENV || 'development',
+          nodeVersion: process.version,
+          port: process.env.PORT || '5000'
+        },
+        checks: {
+          database: isDatabaseHealthy,
+          envVars: !!process.env.DATABASE_URL,
+        }
       };
       
       const statusCode = isDatabaseHealthy ? 200 : 503;
       res.status(statusCode).json(health);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       res.status(503).json({
         status: 'unhealthy',
         timestamp: new Date().toISOString(),
-        error: 'Health check failed',
-        uptime: process.uptime()
+        error: errorMessage,
+        server: {
+          uptime: process.uptime(),
+          environment: process.env.NODE_ENV || 'development'
+        }
       });
+    }
+  });
+
+  // Basic liveness probe for Kubernetes/container orchestration
+  app.get('/health/live', (_req, res) => {
+    res.status(200).json({ status: 'alive', timestamp: new Date().toISOString() });
+  });
+
+  // Readiness probe - checks if app is ready to serve traffic
+  app.get('/health/ready', async (_req, res) => {
+    try {
+      const isDatabaseHealthy = await checkDatabaseConnection();
+      if (isDatabaseHealthy) {
+        res.status(200).json({ status: 'ready', timestamp: new Date().toISOString() });
+      } else {
+        res.status(503).json({ status: 'not ready', reason: 'database unavailable' });
+      }
+    } catch (error) {
+      res.status(503).json({ status: 'not ready', reason: 'health check failed' });
     }
   });
 

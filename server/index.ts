@@ -44,17 +44,30 @@ async function startServer() {
     const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
     
     if (missingEnvVars.length > 0) {
+      log(`❌ Missing required environment variables: ${missingEnvVars.join(', ')}`);
       throw new Error(`Missing required environment variables: ${missingEnvVars.join(', ')}`);
     }
 
     // Set production defaults
     process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+    log(`🔧 Environment: ${process.env.NODE_ENV}`);
+
+    // Validate port configuration early
+    const port = parseInt(process.env.PORT || '5000', 10);
+    if (isNaN(port) || port < 1 || port > 65535) {
+      log(`❌ Invalid port configuration: ${process.env.PORT}`);
+      throw new Error(`Invalid port number: ${process.env.PORT}`);
+    }
 
     // Initialize database connection with retry logic
-    log("Initializing database connection...");
+    log("🔄 Initializing database connection...");
     await initializeDatabase();
+    log("✅ Database initialized successfully");
 
+    // Register routes with error handling
+    log("🔄 Setting up routes...");
     const server = await registerRoutes(app);
+    log("✅ Routes registered successfully");
 
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
@@ -77,21 +90,35 @@ async function startServer() {
     // Other ports are firewalled. Default to 5000 if not specified.
     // this serves both the API and the client.
     // It is the only port that is not firewalled.
-    const port = parseInt(process.env.PORT || '5000', 10);
     
-    // Validate port number
-    if (isNaN(port) || port < 1 || port > 65535) {
-      throw new Error(`Invalid port number: ${process.env.PORT}`);
-    }
-
+    log(`🔄 Starting server on port ${port}...`);
+    
+    // Start server with comprehensive error handling
     server.listen({
       port,
       host: "0.0.0.0",
       reusePort: true,
     }, () => {
-      log(`serving on port ${port}`);
-      log(`Environment: ${process.env.NODE_ENV}`);
-      log(`Health check available at: /health`);
+      log(`🚀 Server successfully started!`);
+      log(`📍 Port: ${port}`);
+      log(`🌐 Host: 0.0.0.0 (accessible from anywhere)`);
+      log(`🔧 Environment: ${process.env.NODE_ENV}`);
+      log(`💚 Health check: /health`);
+      log(`📊 API endpoints: /api/*`);
+    });
+
+    // Handle server startup errors
+    server.on('error', (error: any) => {
+      if (error.code === 'EADDRINUSE') {
+        log(`❌ Port ${port} is already in use`);
+        process.exit(1);
+      } else if (error.code === 'EACCES') {
+        log(`❌ Permission denied to bind to port ${port}`);
+        process.exit(1);
+      } else {
+        log(`❌ Server error: ${error.message}`);
+        process.exit(1);
+      }
     });
 
     // Graceful shutdown handling
@@ -112,12 +139,40 @@ async function startServer() {
 
     return server;
   } catch (error) {
-    log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
-    process.exit(1);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    log(`💥 Critical startup error: ${errorMessage}`);
+    
+    // Log additional context in development
+    if (process.env.NODE_ENV === 'development' && error instanceof Error && error.stack) {
+      log(`Stack trace: ${error.stack}`);
+    }
+    
+    // Attempt graceful cleanup before exit
+    try {
+      // Close any open database connections
+      process.exit(1);
+    } catch (cleanupError) {
+      log(`Error during cleanup: ${cleanupError}`);
+      process.exit(1);
+    }
   }
 }
 
+// Ensure uncaught exceptions and unhandled rejections are logged
+process.on('uncaughtException', (error) => {
+  log(`💥 Uncaught Exception: ${error.message}`);
+  log(`Stack: ${error.stack}`);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  log(`💥 Unhandled Rejection at: ${promise}, reason: ${reason}`);
+  process.exit(1);
+});
+
+// Start the server
 startServer().catch((error) => {
-  log(`Unexpected error during startup: ${error instanceof Error ? error.message : String(error)}`);
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  log(`💥 Unexpected error during startup: ${errorMessage}`);
   process.exit(1);
 });
