@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/components/theme-provider";
-import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3, Heart, LogIn, LogOut, User } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3, Heart, LogIn, LogOut, User, Printer } from "lucide-react";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -79,6 +79,10 @@ export default function Calendar() {
   const closeModal = () => {
     setShowModal(false);
     setSelectedEvent(null);
+  };
+
+  const printCalendar = () => {
+    window.print();
   };
 
   const navigateMonth = (direction: 'prev' | 'next') => {
@@ -243,6 +247,15 @@ export default function Calendar() {
                         <span>List</span>
                       </Button>
                     </Link>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={printCalendar}
+                      className="flex items-center space-x-1 print:hidden"
+                    >
+                      <Printer className="w-4 h-4" />
+                      <span>Print</span>
+                    </Button>
                   </div>
                 </div>
               </div>

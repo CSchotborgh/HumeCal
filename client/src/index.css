@@ -146,3 +146,79 @@
   .border-earth { border-color: var(--earth); }
   .border-lake { border-color: var(--lake); }
 }
+
+/* Print styles */
+@media print {
+  /* Hide non-essential elements for printing */
+  .print\\:hidden {
+    display: none !important;
+  }
+  
+  /* Hide navigation and filters in print */
+  header,
+  .lg\\:col-span-1,
+  footer {
+    display: none !important;
+  }
+  
+  /* Adjust main content for print */
+  .lg\\:grid-cols-4 {
+    display: block !important;
+  }
+  
+  .lg\\:col-span-3 {
+    width: 100% !important;
+  }
+  
+  /* Print-friendly colors */
+  * {
+    color: black !important;
+    background-color: white !important;
+    box-shadow: none !important;
+  }
+  
+  /* Keep event colors visible in print */
+  .bg-pink-500,
+  .bg-blue-600,
+  .bg-green-600,
+  .bg-orange-500,
+  .bg-purple-500,
+  .bg-yellow-500,
+  .bg-teal-500,
+  .bg-gray-500 {
+    background-color: #e5e5e5 !important;
+    border: 1px solid #999 !important;
+  }
+  
+  /* Print layout adjustments */
+  .min-h-\\[120px\\] {
+    min-height: 80px !important;
+  }
+  
+  /* Ensure page breaks work well */
+  .bg-card {
+    page-break-inside: avoid;
+    border: 1px solid #ccc !important;
+  }
+  
+  /* Print-friendly text */
+  .text-xs {
+    font-size: 10px !important;
+  }
+  
+  .text-sm {
+    font-size: 12px !important;
+  }
+  
+  /* Print title */
+  body::before {
+    content: "Hume Lake Christian Camps - Calendar";
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #000;
+  }
+}
