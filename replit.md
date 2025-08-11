@@ -39,7 +39,9 @@ The application uses a dual storage approach:
 - **Event Details**: Modal popups showing comprehensive event information including pricing options
 - **User Authentication**: Replit OAuth integration for secure user login and session management
 - **Favorites System**: Personal event bookmarking for authenticated users
-- **Print Functionality**: Professional print layouts for all calendar views with GitHub-style formatting
+- **Print Functionality**: Professional print layouts for all calendar views and individual event modals with GitHub-style formatting
+- **Share Functionality**: Complete sharing system with URL sharing, native device sharing, email, SMS, and social media integration
+- **Theme Toggle**: Light/dark mode support with system theme detection and localStorage persistence
 - **Contact Integration**: Direct access to Hume Lake contact information and navigation
 - **Responsive Design**: Mobile-first design approach with adaptive layouts
 - **Type Safety**: End-to-end TypeScript implementation with shared schemas

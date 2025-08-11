@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/components/favorite-button";
-import { X, ChevronDown, Printer } from "lucide-react";
+import { X, ChevronDown, Printer, Share2, Copy, Mail, MessageSquare, ExternalLink } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import type { Event } from "@shared/schema";
 
 interface EventModalProps {
@@ -11,6 +14,9 @@ interface EventModalProps {
 }
 
 export function EventModal({ event, onClose }: EventModalProps) {
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const { toast } = useToast();
+
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -187,6 +193,70 @@ export function EventModal({ event, onClose }: EventModalProps) {
     printWindow.close();
   };
 
+  const shareEvent = () => {
+    const eventUrl = `${window.location.origin}?event=${event.id}`;
+    const shareText = `Check out this event at Hume Lake Christian Camps: ${event.title}`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: `${event.title} - Hume Lake Christian Camps`,
+        text: shareText,
+        url: eventUrl,
+      }).catch(() => {
+        // Fallback to dialog if native sharing fails
+        setShareDialogOpen(true);
+      });
+    } else {
+      setShareDialogOpen(true);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Copied to clipboard",
+        description: "Link copied successfully!",
+      });
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      toast({
+        title: "Copied to clipboard",
+        description: "Link copied successfully!",
+      });
+    }
+  };
+
+  const shareViaEmail = () => {
+    const eventUrl = `${window.location.origin}?event=${event.id}`;
+    const subject = encodeURIComponent(`${event.title} - Hume Lake Christian Camps`);
+    const body = encodeURIComponent(`Hi! I wanted to share this amazing event with you:
+
+${event.title}
+Date: ${formatDate(event.startDate)}${event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}
+Location: ${event.location}
+Age Group: ${event.ageGroup}
+
+${event.description ? event.description + '\n\n' : ''}For more details and to register, visit: ${eventUrl}
+
+Hope to see you there!`);
+    
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+  };
+
+  const shareViaSMS = () => {
+    const eventUrl = `${window.location.origin}?event=${event.id}`;
+    const message = encodeURIComponent(`Check out this event at Hume Lake: ${event.title} on ${formatDate(event.startDate)}. ${eventUrl}`);
+    window.open(`sms:?body=${message}`);
+  };
+
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-US', {
       month: 'long',
@@ -211,6 +281,15 @@ export function EventModal({ event, onClose }: EventModalProps) {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
             <div className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={shareEvent}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </Button>
               <Button
                 variant="ghost"
                 size="sm"
@@ -344,6 +423,72 @@ export function EventModal({ event, onClose }: EventModalProps) {
             </div>
           </div>
         </div>
+
+        {/* Share Dialog */}
+        <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Share Event</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Event Link</label>
+                <div className="flex space-x-2">
+                  <Input
+                    readOnly
+                    value={`${window.location.origin}?event=${event.id}`}
+                    className="flex-1"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyToClipboard(`${window.location.origin}?event=${event.id}`)}
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="border-t pt-4">
+                <p className="text-sm text-muted-foreground mb-3">Share via:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={shareViaEmail}
+                    className="justify-start"
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Email
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={shareViaSMS}
+                    className="justify-start"
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Text Message
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => window.open(`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '?event=' + event.id)}`)}
+                    className="justify-start"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Facebook
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this event: ${event.title}`)}&url=${encodeURIComponent(window.location.origin + '?event=' + event.id)}`)}
+                    className="justify-start"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Twitter
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

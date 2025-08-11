@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/components/theme-provider";
 import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3, Heart, LogIn, LogOut, User, Printer } from "lucide-react";
+import { ShareButton } from "@/components/share-button";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -20,7 +21,7 @@ interface CalendarFilters {
 }
 
 export default function Calendar() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { isAuthenticated, user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
@@ -35,6 +36,22 @@ export default function Calendar() {
   const { data: events = [], isLoading } = useQuery<Event[]>({
     queryKey: ["/api/events"],
   });
+
+  // Handle shared event URLs
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sharedEventId = urlParams.get('event');
+    
+    if (sharedEventId && events.length > 0) {
+      const sharedEvent = events.find(event => event.id === sharedEventId);
+      if (sharedEvent) {
+        setSelectedEvent(sharedEvent);
+        setShowModal(true);
+        // Clear the URL parameter after opening
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    }
+  }, [events]);
 
   const filteredEvents = useMemo(() => {
     return events.filter(event => {
@@ -151,7 +168,7 @@ export default function Calendar() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={toggleTheme}
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 className="w-8 h-8"
               >
                 {theme === "light" ? (
@@ -165,7 +182,7 @@ export default function Calendar() {
                   <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-md">
                     <User className="w-4 h-4" />
                     <span className="text-sm font-medium">
-                      {user?.firstName || 'User'}
+                      {user?.firstName || user?.email || 'User'}
                     </span>
                   </div>
                   <a href="/api/logout">
@@ -247,6 +264,13 @@ export default function Calendar() {
                         <span>List</span>
                       </Button>
                     </Link>
+                    <ShareButton
+                      title="Hume Lake Christian Camps - Events Calendar"
+                      description="Discover amazing Christian camps and retreats at Hume Lake. Find your perfect event for spiritual growth and community."
+                      variant="outline"
+                      size="sm"
+                      className="print:hidden"
+                    />
                     <Button 
                       size="sm" 
                       variant="outline" 
