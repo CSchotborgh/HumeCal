@@ -25,129 +25,65 @@ export function EventModal({ event, onClose }: EventModalProps) {
     });
   };
 
-  const generateEventSVG = (eventType: string, title: string, description?: string | null) => {
-    const text = `${eventType} ${title} ${description || ''}`.toLowerCase();
+  const getEventImage = (eventType: string, title: string) => {
+    const text = `${eventType} ${title}`.toLowerCase();
     
-    // Color schemes based on event type
-    let primaryColor = "#4F83CC";
-    let secondaryColor = "#87CEEB";
-    let accentColor = "#228B22";
-    let elements: string[] = [];
-    
-    if (text.includes("women") || text.includes("ladies")) {
-      primaryColor = "#E6A8D2";
-      secondaryColor = "#F8BBD9";
-      accentColor = "#FF69B4";
-      elements = ['flowers', 'serene-lake'];
-    } else if (text.includes("men") || text.includes("pastor") || text.includes("father")) {
-      primaryColor = "#4682B4";
-      secondaryColor = "#5F9EA0";
-      accentColor = "#2F4F4F";
-      elements = ['mountains', 'trees'];
-    } else if (text.includes("family")) {
-      primaryColor = "#90EE90";
-      secondaryColor = "#98FB98";
-      accentColor = "#32CD32";
-      elements = ['family-scene', 'lake'];
-    } else if (text.includes("young") || text.includes("youth") || text.includes("teen")) {
-      primaryColor = "#FF8C00";
-      secondaryColor = "#FFA500";
-      accentColor = "#FF4500";
-      elements = ['adventure', 'activities'];
-    } else if (text.includes("marriage") || text.includes("couples")) {
-      primaryColor = "#DDA0DD";
-      secondaryColor = "#EE82EE";
-      accentColor = "#BA55D3";
-      elements = ['romantic', 'sunset'];
-    } else if (text.includes("creative") || text.includes("arts")) {
-      primaryColor = "#FFD700";
-      secondaryColor = "#FFA500";
-      accentColor = "#FF8C00";
-      elements = ['artistic', 'inspiration'];
-    } else if (text.includes("summer")) {
-      primaryColor = "#87CEEB";
-      secondaryColor = "#00BFFF";
-      accentColor = "#FFD700";
-      elements = ['sun', 'water-activities'];
+    // Mountain lake scenery for general retreats
+    if (text.includes("retreat") || text.includes("camp")) {
+      return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
     }
     
-    // Create SVG based on elements
-    const svgContent = `
-      <svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:${secondaryColor};stop-opacity:1" />
-            <stop offset="100%" style="stop-color:${primaryColor};stop-opacity:1" />
-          </linearGradient>
-          <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#8B7355;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#5D4E37;stop-opacity:1" />
-          </linearGradient>
-        </defs>
-        
-        <!-- Sky background -->
-        <rect width="1200" height="250" fill="url(#skyGradient)" />
-        
-        <!-- Mountains -->
-        <polygon points="0,200 200,80 400,120 600,60 800,100 1000,40 1200,90 1200,250 0,250" 
-                 fill="url(#mountainGradient)" />
-        
-        <!-- Lake -->
-        <ellipse cx="600" cy="320" rx="500" ry="80" fill="${primaryColor}" opacity="0.7" />
-        
-        ${elements.includes('flowers') ? `
-        <!-- Flowers for women's events -->
-        <circle cx="100" cy="180" r="8" fill="#FF69B4" />
-        <circle cx="120" cy="175" r="6" fill="#FFB6C1" />
-        <circle cx="1100" cy="190" r="7" fill="#FF1493" />
-        ` : ''}
-        
-        ${elements.includes('trees') ? `
-        <!-- Trees for nature/men's events -->
-        <polygon points="150,250 170,200 190,250" fill="#228B22" />
-        <polygon points="950,250 970,190 990,250" fill="#32CD32" />
-        <polygon points="1050,250 1070,210 1090,250" fill="#228B22" />
-        ` : ''}
-        
-        ${elements.includes('sun') ? `
-        <!-- Sun for summer events -->
-        <circle cx="1050" cy="80" r="40" fill="#FFD700" />
-        <path d="M1050,20 L1050,40 M1090,50 L1080,60 M1110,80 L1090,80 M1090,110 L1080,100 M1050,140 L1050,120 M1010,110 L1020,100 M990,80 L1010,80 M1010,50 L1020,60" stroke="#FFA500" stroke-width="3" />
-        ` : ''}
-        
-        ${elements.includes('romantic') ? `
-        <!-- Heart for romantic events -->
-        <path d="M580,150 C580,140 590,130 600,130 C610,130 620,140 620,150 C620,160 600,180 600,180 C600,180 580,160 580,150 Z" fill="${accentColor}" />
-        ` : ''}
-        
-        ${elements.includes('artistic') ? `
-        <!-- Artistic brush strokes -->
-        <path d="M50,100 Q200,150 350,120 T650,140" stroke="${accentColor}" stroke-width="8" fill="none" opacity="0.6" />
-        <path d="M800,160 Q950,110 1100,130" stroke="${primaryColor}" stroke-width="6" fill="none" opacity="0.8" />
-        ` : ''}
-        
-        <!-- Event title overlay -->
-        <rect x="50" y="320" width="${Math.min(title.length * 12 + 40, 400)}" height="50" fill="rgba(0,0,0,0.7)" rx="5" />
-        <text x="70" y="345" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">${title}</text>
-        <text x="70" y="360" font-family="Arial, sans-serif" font-size="12" fill="#E0E0E0">${eventType}</text>
-      </svg>
-    `;
+    // Women's retreats - serene lake with flowers
+    if (text.includes("women") || text.includes("ladies")) {
+      return "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
     
-    return `data:image/svg+xml;base64,${btoa(svgContent)}`;
+    // Men's retreats - mountain wilderness
+    if (text.includes("men") || text.includes("pastor") || text.includes("father")) {
+      return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
+    
+    // Family events - lakeside gathering
+    if (text.includes("family")) {
+      return "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
+    
+    // Youth/Young Adults - adventure activities
+    if (text.includes("young") || text.includes("youth") || text.includes("teen")) {
+      return "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
+    
+    // Marriage/Couples - romantic lakeside
+    if (text.includes("marriage") || text.includes("couples")) {
+      return "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
+    
+    // Creative Arts - artistic mountain setting
+    if (text.includes("creative") || text.includes("arts")) {
+      return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
+    
+    // Summer camps - sunny lake activities
+    if (text.includes("summer")) {
+      return "https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
+    }
+    
+    // Default Hume Lake scenic view
+    return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
   };
 
-  const getEventImageAlt = (eventType: string, title: string, description?: string | null) => {
-    const text = `${eventType} ${title} ${description || ''}`.toLowerCase();
+  const getEventImageAlt = (eventType: string, title: string) => {
+    const text = `${eventType} ${title}`.toLowerCase();
     
-    if (text.includes("women") || text.includes("ladies")) return `Custom illustration for ${title} - serene mountain lake setting with floral elements for women's retreat`;
-    if (text.includes("men") || text.includes("pastor") || text.includes("father")) return `Custom illustration for ${title} - mountain wilderness with trees for men's retreat`;
-    if (text.includes("family")) return `Custom illustration for ${title} - beautiful lakeside setting for family gathering`;
-    if (text.includes("young") || text.includes("youth") || text.includes("teen")) return `Custom illustration for ${title} - adventure-themed mountain lake for youth`;
-    if (text.includes("marriage") || text.includes("couples")) return `Custom illustration for ${title} - romantic lakeside setting for couples retreat`;
-    if (text.includes("creative") || text.includes("arts")) return `Custom illustration for ${title} - artistic mountain scenery with creative elements`;
-    if (text.includes("summer")) return `Custom illustration for ${title} - sunny lake activities for summer camp`;
+    if (text.includes("women") || text.includes("ladies")) return "Serene mountain lake setting for women's retreat";
+    if (text.includes("men") || text.includes("pastor") || text.includes("father")) return "Mountain wilderness for men's retreat";
+    if (text.includes("family")) return "Beautiful lakeside setting for family gathering";
+    if (text.includes("young") || text.includes("youth") || text.includes("teen")) return "Adventure activities at mountain lake for youth";
+    if (text.includes("marriage") || text.includes("couples")) return "Romantic lakeside setting for couples retreat";
+    if (text.includes("creative") || text.includes("arts")) return "Inspiring mountain scenery for creative arts retreat";
+    if (text.includes("summer")) return "Sunny lake activities for summer camp";
     
-    return `Custom illustration for ${title} - Beautiful Hume Lake Christian Camp mountain setting`;
+    return "Beautiful Hume Lake Christian Camp mountain setting";
   };
 
   const minPrice = Math.min(...event.pricingOptions.map(p => p.price));
@@ -177,8 +113,8 @@ export function EventModal({ event, onClose }: EventModalProps) {
         </div>
         <div className="p-8">
           <img 
-            src={generateEventSVG(event.eventType, event.title, event.description)}
-            alt={getEventImageAlt(event.eventType, event.title, event.description)}
+            src={getEventImage(event.eventType, event.title)}
+            alt={getEventImageAlt(event.eventType, event.title)}
             className="w-full h-56 object-cover rounded-lg mb-8"
           />
 
