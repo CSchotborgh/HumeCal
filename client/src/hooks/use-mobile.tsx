@@ -17,3 +17,43 @@ export function useIsMobile() {
 
   return !!isMobile
 }
+
+export function useMobileOrientation() {
+  const [orientation, setOrientation] = React.useState<{
+    isMobile: boolean
+    isPortrait: boolean
+    isLandscape: boolean
+  }>({
+    isMobile: false,
+    isPortrait: false,
+    isLandscape: false
+  })
+
+  React.useEffect(() => {
+    const updateOrientation = () => {
+      const isMobile = window.innerWidth < MOBILE_BREAKPOINT
+      const isPortrait = window.innerHeight > window.innerWidth
+      const isLandscape = window.innerWidth > window.innerHeight
+      
+      setOrientation({
+        isMobile,
+        isPortrait: isMobile && isPortrait,
+        isLandscape: isMobile && isLandscape
+      })
+    }
+
+    // Initial check
+    updateOrientation()
+
+    // Listen for both resize and orientation change events
+    window.addEventListener('resize', updateOrientation)
+    window.addEventListener('orientationchange', updateOrientation)
+    
+    return () => {
+      window.removeEventListener('resize', updateOrientation)
+      window.removeEventListener('orientationchange', updateOrientation)
+    }
+  }, [])
+
+  return orientation
+}

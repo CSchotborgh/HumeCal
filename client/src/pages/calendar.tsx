@@ -4,6 +4,7 @@ import { CalendarGrid } from "@/components/calendar-grid";
 import { EventFilters } from "@/components/event-filters";
 import { EventModal } from "@/components/event-modal";
 import { useAuth } from "@/hooks/useAuth";
+import { useMobileOrientation } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,7 @@ interface CalendarFilters {
 export default function Calendar() {
   const { theme, setTheme } = useTheme();
   const { isAuthenticated, user } = useAuth();
+  const { isMobile, isPortrait, isLandscape } = useMobileOrientation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -183,7 +185,7 @@ export default function Calendar() {
                   <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-md">
                     <User className="w-4 h-4" />
                     <span className="text-sm font-medium hidden sm:inline">
-                      {user?.firstName || user?.email || 'User'}
+                      {(user as any)?.firstName || (user as any)?.email || 'User'}
                     </span>
                   </div>
                   <a href="/api/logout">
@@ -222,7 +224,7 @@ export default function Calendar() {
             {/* Calendar Navigation */}
             <div className="bg-card border border-border rounded-lg shadow-sm mb-4 sm:mb-6">
               <div className="px-3 sm:px-6 py-4 border-b border-border">
-                <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+                <div className={`${isPortrait ? 'flex flex-col space-y-3' : 'flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between'}`}>
                   <div className="flex items-center justify-center space-x-2 sm:space-x-3">
                     <Button
                       variant="ghost"
@@ -242,44 +244,94 @@ export default function Calendar() {
                       <ChevronRight className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-1 justify-center sm:justify-end">
-                    <Button size="sm" variant="default" className="flex items-center space-x-1">
+                  
+                  {/* Responsive Navigation Buttons */}
+                  <div className={`
+                    ${isPortrait 
+                      ? 'mobile-portrait-nav mobile-nav-portrait' 
+                      : isLandscape 
+                        ? 'mobile-landscape-nav mobile-nav-landscape' 
+                        : 'flex flex-wrap gap-1 justify-center sm:justify-end'
+                    }
+                  `}>
+                    {/* View Type Buttons */}
+                    <Button 
+                      size={isPortrait ? "default" : "sm"} 
+                      variant="default" 
+                      className={`
+                        flex items-center justify-center space-x-1
+                        ${isPortrait ? 'portrait-button' : isLandscape ? 'landscape-button' : ''}
+                      `}
+                    >
                       <Grid3X3 className="w-4 h-4" />
-                      <span className="hidden xs:inline">Month</span>
+                      <span className={isPortrait || !isMobile ? "inline" : "hidden xs:inline"}>Month</span>
                     </Button>
+                    
                     <Link href="/week">
-                      <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                      <Button 
+                        size={isPortrait ? "default" : "sm"} 
+                        variant="ghost" 
+                        className={`
+                          flex items-center justify-center space-x-1
+                          ${isPortrait ? 'portrait-button' : isLandscape ? 'landscape-button' : 'w-full'}
+                        `}
+                      >
                         <CalendarIcon className="w-4 h-4" />
-                        <span className="hidden xs:inline">Week</span>
+                        <span className={isPortrait || !isMobile ? "inline" : "hidden xs:inline"}>Week</span>
                       </Button>
                     </Link>
+                    
                     <Link href="/year">
-                      <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                      <Button 
+                        size={isPortrait ? "default" : "sm"} 
+                        variant="ghost" 
+                        className={`
+                          flex items-center justify-center space-x-1
+                          ${isPortrait ? 'portrait-button' : isLandscape ? 'landscape-button' : 'w-full'}
+                        `}
+                      >
                         <CalendarIcon className="w-4 h-4" />
-                        <span className="hidden xs:inline">Year</span>
+                        <span className={isPortrait || !isMobile ? "inline" : "hidden xs:inline"}>Year</span>
                       </Button>
                     </Link>
+                    
                     <Link href="/list">
-                      <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                      <Button 
+                        size={isPortrait ? "default" : "sm"} 
+                        variant="ghost" 
+                        className={`
+                          flex items-center justify-center space-x-1
+                          ${isPortrait ? 'portrait-button' : isLandscape ? 'landscape-button' : 'w-full'}
+                        `}
+                      >
                         <List className="w-4 h-4" />
-                        <span className="hidden xs:inline">List</span>
+                        <span className={isPortrait || !isMobile ? "inline" : "hidden xs:inline"}>List</span>
                       </Button>
                     </Link>
+                    
+                    {/* Action Buttons */}
                     <ShareButton
                       title="Hume Lake Christian Camps - Events Calendar"
                       description="Discover amazing Christian camps and retreats at Hume Lake. Find your perfect event for spiritual growth and community."
                       variant="outline"
-                      size="sm"
-                      className="print:hidden"
+                      size={isPortrait ? "default" : "sm"}
+                      className={`
+                        print:hidden
+                        ${isPortrait ? 'portrait-button' : isLandscape ? 'landscape-button' : ''}
+                      `}
                     />
+                    
                     <Button 
-                      size="sm" 
+                      size={isPortrait ? "default" : "sm"} 
                       variant="outline" 
                       onClick={printCalendar}
-                      className="flex items-center space-x-1 print:hidden"
+                      className={`
+                        flex items-center justify-center space-x-1 print:hidden
+                        ${isPortrait ? 'portrait-button' : isLandscape ? 'landscape-button' : ''}
+                      `}
                     >
                       <Printer className="w-4 h-4" />
-                      <span>Print</span>
+                      <span className={isPortrait || !isMobile ? "inline" : ""}>Print</span>
                     </Button>
                   </div>
                 </div>

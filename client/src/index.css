@@ -18,6 +18,67 @@
   }
 }
 
+/* Mobile orientation detection and responsive utilities */
+@layer components {
+  /* Mobile portrait navigation */
+  .mobile-portrait-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  /* Mobile landscape navigation */
+  .mobile-landscape-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: center;
+  }
+  
+  /* Portrait-specific button styling */
+  .portrait-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    justify-content: center;
+  }
+  
+  /* Landscape-specific button styling */
+  .landscape-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+}
+
+/* Media queries for device orientation */
+@media (max-width: 768px) {
+  /* Portrait mode styles */
+  @media (orientation: portrait) {
+    .mobile-nav-portrait {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 0.5rem !important;
+    }
+    
+    .mobile-nav-portrait > * {
+      width: 100% !important;
+    }
+  }
+  
+  /* Landscape mode styles */
+  @media (orientation: landscape) {
+    .mobile-nav-landscape {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 0.25rem !important;
+      justify-content: center !important;
+    }
+  }
+}
+
 :root {
   /* GitHub-inspired color scheme with 10% grey contrast */
   --background: hsl(0, 0%, 90%);
