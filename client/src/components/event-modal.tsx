@@ -25,14 +25,14 @@ export function EventModal({ event, onClose }: EventModalProps) {
     });
   };
 
-  const generateEventSVG = (eventType: string, title: string, description?: string) => {
+  const generateEventSVG = (eventType: string, title: string, description?: string | null) => {
     const text = `${eventType} ${title} ${description || ''}`.toLowerCase();
     
     // Color schemes based on event type
     let primaryColor = "#4F83CC";
     let secondaryColor = "#87CEEB";
     let accentColor = "#228B22";
-    let elements = [];
+    let elements: string[] = [];
     
     if (text.includes("women") || text.includes("ladies")) {
       primaryColor = "#E6A8D2";
@@ -136,7 +136,7 @@ export function EventModal({ event, onClose }: EventModalProps) {
     return `data:image/svg+xml;base64,${btoa(svgContent)}`;
   };
 
-  const getEventImageAlt = (eventType: string, title: string, description?: string) => {
+  const getEventImageAlt = (eventType: string, title: string, description?: string | null) => {
     const text = `${eventType} ${title} ${description || ''}`.toLowerCase();
     
     if (text.includes("women") || text.includes("ladies")) return `Custom illustration for ${title} - serene mountain lake setting with floral elements for women's retreat`;
