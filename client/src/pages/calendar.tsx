@@ -17,6 +17,7 @@ interface CalendarFilters {
   eventTypes: string[];
   priceRange: { min: number; max: number };
   ageGroups: string[];
+  locations: string[];
 }
 
 export default function Calendar() {
@@ -29,7 +30,8 @@ export default function Calendar() {
     search: "",
     eventTypes: [],
     priceRange: { min: 0, max: 1000 },
-    ageGroups: []
+    ageGroups: [],
+    locations: []
   });
 
   const { data: events = [], isLoading } = useQuery<Event[]>({
@@ -65,6 +67,16 @@ export default function Calendar() {
           return false;
         });
         if (!eventAgeMatches) return false;
+      }
+
+      // Location filter
+      if (filters.locations && filters.locations.length > 0) {
+        const locationMatches = filters.locations.some(location => {
+          if (location === "Hume Lake" && (event.location?.includes("Hume Lake") || !event.location?.includes("SoCal"))) return true;
+          if (location === "Hume SoCal" && event.location?.includes("SoCal")) return true;
+          return false;
+        });
+        if (!locationMatches) return false;
       }
 
       return true;

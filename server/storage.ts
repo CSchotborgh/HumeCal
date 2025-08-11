@@ -222,6 +222,128 @@ export class DatabaseStorage implements IStorage {
           { name: "Young Adults Minor", price: 395, description: "Ages 16 to 17" }
         ]
       },
+
+      // === HUME SOCAL SUMMER CAMP 2025 EVENTS ===
+      {
+        title: "Combined Week 1 - Middle & High School",
+        startDate: "2025-06-08",
+        endDate: "2025-06-14",
+        eventType: "Summer Camp",
+        description: "The gospel isn't merely one ingredient in our programming mix. It's the reason for everything we do. Experience creative theme, dynamic worship, innovative recreation, and amazing mountain activities.",
+        ageGroup: "11-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle & High School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle & High School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Middle School Week 2",
+        startDate: "2025-06-15",
+        endDate: "2025-06-21",
+        eventType: "Summer Camp",
+        description: "A week specifically designed for middle school students with age-appropriate activities, worship, and teaching focused on their spiritual development.",
+        ageGroup: "11-14",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Middle School Week 3",
+        startDate: "2025-06-22",
+        endDate: "2025-06-28",
+        eventType: "Summer Camp",
+        description: "Another dedicated middle school week featuring creative theme programming, high-energy recreation, and meaningful spiritual growth opportunities.",
+        ageGroup: "11-14",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Combined Week 4 - Middle & High School (50% OFF)",
+        startDate: "2025-06-29",
+        endDate: "2025-07-05",
+        eventType: "Summer Camp",
+        description: "Special discounted week for both middle and high school students! Experience the full Hume SoCal summer camp program at half price.",
+        ageGroup: "11-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor (50% OFF)", price: 444, description: "Per camper - SPECIAL DISCOUNT" },
+          { name: "We Provide a Counselor (50% OFF)", price: 485, description: "Per camper - SPECIAL DISCOUNT" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "High School Week 5",
+        startDate: "2025-07-06",
+        endDate: "2025-07-12",
+        eventType: "Summer Camp",
+        description: "A high-energy week designed specifically for high school students with challenging teaching, exciting activities, and opportunities for spiritual growth.",
+        ageGroup: "14-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (High School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (High School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "High School Week 6",
+        startDate: "2025-07-13",
+        endDate: "2025-07-19",
+        eventType: "Summer Camp",
+        description: "Another dedicated high school week featuring dynamic worship, innovative recreation, and Gospel-centered teaching tailored for teens.",
+        ageGroup: "14-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (High School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (High School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Middle School Week 7",
+        startDate: "2025-07-20",
+        endDate: "2025-07-26",
+        eventType: "Summer Camp",
+        description: "Final middle school week of the summer featuring all the classic Hume SoCal programming with creative theme and exciting activities.",
+        ageGroup: "11-14",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
+      {
+        title: "Combined Week 8 - Middle & High School",
+        startDate: "2025-08-03",
+        endDate: "2025-08-09",
+        eventType: "Summer Camp",
+        description: "Final summer camp week for both middle and high school students featuring the Alvalldr theme and all the amazing Hume SoCal programming.",
+        ageGroup: "11-18",
+        gender: "Coed",
+        location: "Hume SoCal, Green Valley Lake, CA",
+        pricingOptions: [
+          { name: "You Bring a Counselor", price: 889, description: "Per camper (Middle & High School)" },
+          { name: "We Provide a Counselor", price: 969, description: "Per camper (Middle & High School)" },
+          { name: "Counselor Fee", price: 300, description: "Per counselor you bring" }
+        ]
+      },
       {
         title: "Spring Women's Retreat 1",
         startDate: "2026-04-17",
