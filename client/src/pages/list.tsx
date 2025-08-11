@@ -5,7 +5,7 @@ import { EventModal } from "@/components/event-modal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, Clock, Grid3X3 } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Users, Clock, Grid3X3, List as ListIcon } from "lucide-react";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -145,7 +145,22 @@ export function ListPage() {
                     <span>Month</span>
                   </Button>
                 </Link>
-                <Button size="sm" variant="default">List</Button>
+                <Link href="/week">
+                  <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                    <CalendarIcon className="w-4 h-4" />
+                    <span>Week</span>
+                  </Button>
+                </Link>
+                <Link href="/year">
+                  <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                    <CalendarIcon className="w-4 h-4" />
+                    <span>Year</span>
+                  </Button>
+                </Link>
+                <Button size="sm" variant="default" className="flex items-center space-x-1">
+                  <ListIcon className="w-4 h-4" />
+                  <span>List</span>
+                </Button>
               </div>
             </div>
           </div>
@@ -175,7 +190,7 @@ export function ListPage() {
             {sortedEvents.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <CalendarIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-foreground mb-2">No events found</h3>
                   <p className="text-muted-foreground">
                     Try adjusting your filters to see more events.
@@ -203,7 +218,7 @@ export function ListPage() {
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-muted-foreground mb-4">
                               <div className="flex items-center space-x-2">
-                                <Calendar className="w-4 h-4" />
+                                <CalendarIcon className="w-4 h-4" />
                                 <span>{formatDate(event.startDate)}</span>
                               </div>
                               <div className="flex items-center space-x-2">

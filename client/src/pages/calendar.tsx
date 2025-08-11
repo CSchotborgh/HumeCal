@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/components/theme-provider";
-import { Search, ChevronLeft, ChevronRight, Sun, Moon, List } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3 } from "lucide-react";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -187,7 +187,22 @@ export default function Calendar() {
                     </Button>
                   </div>
                   <div className="flex space-x-1">
-                    <Button size="sm" variant="default">Month</Button>
+                    <Button size="sm" variant="default" className="flex items-center space-x-1">
+                      <Grid3X3 className="w-4 h-4" />
+                      <span>Month</span>
+                    </Button>
+                    <Link href="/week">
+                      <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>Week</span>
+                      </Button>
+                    </Link>
+                    <Link href="/year">
+                      <Button size="sm" variant="ghost" className="flex items-center space-x-1">
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>Year</span>
+                      </Button>
+                    </Link>
                     <Link href="/list">
                       <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                         <List className="w-4 h-4" />
