@@ -96,8 +96,9 @@ export function CalendarGrid({ events, currentDate, onEventClick, onNavigateMont
       {/* Day of week headers */}
       <div className="grid grid-cols-7 border-b border-border">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="p-3 text-center text-sm font-medium text-muted-foreground">
-            {day}
+          <div key={day} className="p-2 sm:p-3 text-center text-xs sm:text-sm font-medium text-muted-foreground">
+            <span className="hidden xs:inline">{day}</span>
+            <span className="xs:hidden">{day.slice(0, 1)}</span>
           </div>
         ))}
       </div>
@@ -107,7 +108,7 @@ export function CalendarGrid({ events, currentDate, onEventClick, onNavigateMont
         {calendarDays.map((day, index) => (
           <div
             key={index}
-            className={`min-h-[120px] border-r border-b border-border p-2 ${
+            className={`min-h-[80px] sm:min-h-[120px] border-r border-b border-border p-1 sm:p-2 ${
               !day.isCurrentMonth ? 'bg-muted/30' : 'bg-background'
             } ${day.isToday ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
           >
@@ -117,15 +118,16 @@ export function CalendarGrid({ events, currentDate, onEventClick, onNavigateMont
               {day.date.getDate()}
             </div>
             
-            <div className="space-y-1">
-              {day.events.slice(0, 3).map((event, eventIndex) => (
+            <div className="space-y-0.5 sm:space-y-1">
+              {day.events.slice(0, 2).map((event, eventIndex) => (
                 <div
                   key={event.id}
                   className="group relative cursor-pointer"
                   onClick={() => onEventClick(event)}
                 >
-                  <div className={`p-1 rounded text-xs font-medium text-white text-left truncate ${getEventColor(event.eventType, event.title)}`}>
-                    {event.title}
+                  <div className={`p-0.5 sm:p-1 rounded text-[10px] sm:text-xs font-medium text-white text-left truncate ${getEventColor(event.eventType, event.title)}`}>
+                    <span className="hidden sm:inline">{event.title}</span>
+                    <span className="sm:hidden">{event.title.slice(0, 10)}...</span>
                   </div>
                   {isAuthenticated && (
                     <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -139,9 +141,9 @@ export function CalendarGrid({ events, currentDate, onEventClick, onNavigateMont
                   )}
                 </div>
               ))}
-              {day.events.length > 3 && (
-                <div className="text-xs text-muted-foreground">
-                  +{day.events.length - 3} more
+              {day.events.length > 2 && (
+                <div className="text-[10px] sm:text-xs text-muted-foreground">
+                  +{day.events.length - 2} more
                 </div>
               )}
             </div>

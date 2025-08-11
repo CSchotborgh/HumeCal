@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-first responsive design */
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  body {
+    overscroll-behavior: none;
+  }
+}
+
 :root {
   /* GitHub-inspired color scheme with 10% grey contrast */
   --background: hsl(0, 0%, 90%);

@@ -87,7 +87,7 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4 sm:space-y-6">
         {/* Search */}
         <div>
           <label className="text-sm font-medium text-foreground mb-2 block">Search Events</label>

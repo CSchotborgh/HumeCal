@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/components/theme-provider";
-import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3, Heart, LogIn, LogOut, User, Printer } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3, Heart, LogIn, LogOut, User, Printer, Menu, X } from "lucide-react";
 import { ShareButton } from "@/components/share-button";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
@@ -32,6 +32,7 @@ export default function Calendar() {
     priceRange: { min: 0, max: 1000 },
     ageGroups: []
   });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const { data: events = [], isLoading } = useQuery<Event[]>({
     queryKey: ["/api/events"],
@@ -150,11 +151,11 @@ export default function Calendar() {
                 <p className="text-xs text-muted-foreground">Events Calendar 2025-2026</p>
               </div>
             </div>
-            <nav className="hidden md:flex items-center space-x-1">
-              <Button variant="ghost" size="sm" className="text-sm">Summer Camps</Button>
-              <Button variant="ghost" size="sm" className="text-sm">Retreats</Button>
+            <nav className="flex items-center space-x-1">
+              <Button variant="ghost" size="sm" className="text-sm hidden sm:block">Summer Camps</Button>
+              <Button variant="ghost" size="sm" className="text-sm hidden sm:block">Retreats</Button>
               <Link href="/contact">
-                <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
+                <Button variant="ghost" size="sm" className="text-sm hidden sm:block">Contact</Button>
               </Link>
               {isAuthenticated && (
                 <Link href="/favorites">
@@ -164,7 +165,7 @@ export default function Calendar() {
                   </Button>
                 </Link>
               )}
-              <div className="h-4 w-px bg-border mx-3"></div>
+              <div className="h-4 w-px bg-border mx-3 hidden sm:block"></div>
               <Button
                 variant="ghost"
                 size="icon"
@@ -181,22 +182,22 @@ export default function Calendar() {
                 <div className="flex items-center space-x-2 ml-3">
                   <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-md">
                     <User className="w-4 h-4" />
-                    <span className="text-sm font-medium">
+                    <span className="text-sm font-medium hidden sm:inline">
                       {user?.firstName || user?.email || 'User'}
                     </span>
                   </div>
                   <a href="/api/logout">
                     <Button variant="outline" size="sm">
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign Out
+                      <LogOut className="w-4 h-4 sm:mr-2" />
+                      <span className="hidden sm:inline">Sign Out</span>
                     </Button>
                   </a>
                 </div>
               ) : (
                 <a href="/api/login">
                   <Button size="sm" className="ml-2">
-                    <LogIn className="w-4 h-4 mr-2" />
-                    Sign In
+                    <LogIn className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Sign In</span>
                   </Button>
                 </a>
               )}
@@ -205,10 +206,10 @@ export default function Calendar() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-6">
         <div className="lg:grid lg:grid-cols-4 lg:gap-6">
           {/* Sidebar Filters */}
-          <div className="lg:col-span-1 mb-6 lg:mb-0">
+          <div className="lg:col-span-1 mb-4 lg:mb-0">
             <EventFilters 
               filters={filters}
               onFiltersChange={setFilters}
@@ -219,10 +220,10 @@ export default function Calendar() {
           {/* Main Calendar */}
           <div className="lg:col-span-3">
             {/* Calendar Navigation */}
-            <div className="bg-card border border-border rounded-lg shadow-sm mb-6">
-              <div className="px-6 py-4 border-b border-border">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
+            <div className="bg-card border border-border rounded-lg shadow-sm mb-4 sm:mb-6">
+              <div className="px-3 sm:px-6 py-4 border-b border-border">
+                <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center justify-center space-x-2 sm:space-x-3">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -231,7 +232,7 @@ export default function Calendar() {
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </Button>
-                    <h2 className="text-xl font-semibold text-foreground">{currentMonthName}</h2>
+                    <h2 className="text-lg sm:text-xl font-semibold text-foreground">{currentMonthName}</h2>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -241,27 +242,27 @@ export default function Calendar() {
                       <ChevronRight className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex space-x-1">
+                  <div className="flex flex-wrap gap-1 justify-center sm:justify-end">
                     <Button size="sm" variant="default" className="flex items-center space-x-1">
                       <Grid3X3 className="w-4 h-4" />
-                      <span>Month</span>
+                      <span className="hidden xs:inline">Month</span>
                     </Button>
                     <Link href="/week">
                       <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                         <CalendarIcon className="w-4 h-4" />
-                        <span>Week</span>
+                        <span className="hidden xs:inline">Week</span>
                       </Button>
                     </Link>
                     <Link href="/year">
                       <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                         <CalendarIcon className="w-4 h-4" />
-                        <span>Year</span>
+                        <span className="hidden xs:inline">Year</span>
                       </Button>
                     </Link>
                     <Link href="/list">
                       <Button size="sm" variant="ghost" className="flex items-center space-x-1">
                         <List className="w-4 h-4" />
-                        <span>List</span>
+                        <span className="hidden xs:inline">List</span>
                       </Button>
                     </Link>
                     <ShareButton

@@ -270,25 +270,25 @@ Hope to see you there!`);
 
   return (
     <div 
-      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-2 sm:p-4"
       onClick={handleBackdropClick}
     >
       <div 
         className="bg-background border border-border rounded-lg shadow-lg max-w-4xl w-full max-h-[95vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="border-b border-border px-6 py-4">
+        <div className="border-b border-border px-3 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
-            <div className="flex items-center space-x-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-foreground pr-2">{event.title}</h2>
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={shareEvent}
                 className="text-muted-foreground hover:text-foreground"
               >
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
+                <Share2 className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Share</span>
               </Button>
               <Button
                 variant="ghost"
@@ -296,8 +296,8 @@ Hope to see you there!`);
                 onClick={printEvent}
                 className="text-muted-foreground hover:text-foreground"
               >
-                <Printer className="w-4 h-4 mr-2" />
-                Print
+                <Printer className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Print</span>
               </Button>
               <Button
                 variant="ghost"
@@ -310,17 +310,17 @@ Hope to see you there!`);
             </div>
           </div>
         </div>
-        <div className="p-8">
+        <div className="p-4 sm:p-8">
           <img 
             src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=300" 
             alt="Hume Lake retreat center" 
-            className="w-full h-56 object-cover rounded-lg mb-8"
+            className="w-full h-40 sm:h-56 object-cover rounded-lg mb-6 sm:mb-8"
           />
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             <div className="lg:col-span-2">
               <h3 className="text-lg font-semibold text-foreground mb-4">Event Details</h3>
-              <div className="grid md:grid-cols-2 gap-6 text-sm">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 text-sm">
                 <div className="space-y-4">
                   <div className="flex justify-between py-2 border-b border-border">
                     <span className="text-muted-foreground font-medium">Date</span>
