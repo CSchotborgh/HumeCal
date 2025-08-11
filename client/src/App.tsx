@@ -9,6 +9,7 @@ import { ListPage } from "@/pages/list";
 import YearPage from "@/pages/year";
 import WeekPage from "@/pages/week";
 import ContactPage from "@/pages/contact";
+import FavoritesPage from "@/pages/favorites";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/year" component={YearPage} />
       <Route path="/week" component={WeekPage} />
       <Route path="/contact" component={ContactPage} />
+      <Route path="/favorites" component={FavoritesPage} />
       <Route component={NotFound} />
     </Switch>
   );

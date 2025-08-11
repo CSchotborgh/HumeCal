@@ -3,11 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { CalendarGrid } from "@/components/calendar-grid";
 import { EventFilters } from "@/components/event-filters";
 import { EventModal } from "@/components/event-modal";
+import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/components/theme-provider";
-import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3 } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Sun, Moon, List, Calendar as CalendarIcon, Grid3X3, Heart, LogIn, LogOut, User } from "lucide-react";
 import { Link } from "wouter";
 import type { Event } from "@shared/schema";
 
@@ -20,6 +21,7 @@ interface CalendarFilters {
 
 export default function Calendar() {
   const { theme, toggleTheme } = useTheme();
+  const { isAuthenticated, user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -133,6 +135,14 @@ export default function Calendar() {
               <Link href="/contact">
                 <Button variant="ghost" size="sm" className="text-sm">Contact</Button>
               </Link>
+              {isAuthenticated && (
+                <Link href="/favorites">
+                  <Button variant="ghost" size="sm" className="text-sm">
+                    <Heart className="w-4 h-4 mr-2" />
+                    Favorites
+                  </Button>
+                </Link>
+              )}
               <div className="h-4 w-px bg-border mx-3"></div>
               <Button
                 variant="ghost"
@@ -146,7 +156,29 @@ export default function Calendar() {
                   <Sun className="h-4 w-4" />
                 )}
               </Button>
-              <Button size="sm" className="ml-2">Register</Button>
+              {isAuthenticated ? (
+                <div className="flex items-center space-x-2 ml-3">
+                  <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-md">
+                    <User className="w-4 h-4" />
+                    <span className="text-sm font-medium">
+                      {user?.firstName || 'User'}
+                    </span>
+                  </div>
+                  <a href="/api/logout">
+                    <Button variant="outline" size="sm">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </a>
+                </div>
+              ) : (
+                <a href="/api/login">
+                  <Button size="sm" className="ml-2">
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                </a>
+              )}
             </nav>
           </div>
         </div>
@@ -219,6 +251,7 @@ export default function Calendar() {
                   currentDate={currentDate}
                   events={filteredEvents}
                   onEventClick={handleEventClick}
+                  onNavigateMonth={navigateMonth}
                 />
               </div>
             </div>

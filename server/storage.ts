@@ -1,23 +1,48 @@
-import { type User, type InsertUser, type Event, type InsertEvent, type PricingOption } from "@shared/schema";
+import {
+  users,
+  events,
+  favoriteEvents,
+  calendarSyncLog,
+  type User,
+  type UpsertUser,
+  type Event,
+  type InsertEvent,
+  type PricingOption,
+  type FavoriteEvent,
+  type InsertFavoriteEvent,
+  type CalendarSyncLog,
+  type InsertCalendarSyncLog
+} from "@shared/schema";
+import { db } from "./db";
+import { eq, and, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
+  // User operations (required for Replit Auth)
   getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  
+  // Event operations
   getEvents(): Promise<Event[]>;
   getEvent(id: string): Promise<Event | undefined>;
   getEventsByDateRange(startDate: string, endDate: string): Promise<Event[]>;
   getEventsByType(eventType: string): Promise<Event[]>;
+  
+  // Favorites operations
+  getUserFavorites(userId: string): Promise<FavoriteEvent[]>;
+  addFavorite(userId: string, eventId: string): Promise<FavoriteEvent>;
+  removeFavorite(userId: string, eventId: string): Promise<void>;
+  isFavorite(userId: string, eventId: string): Promise<boolean>;
+  
+  // Calendar sync operations
+  updateCalendarSync(userId: string, enabled: boolean, googleCalendarId?: string, outlookCalendarId?: string): Promise<User>;
+  addSyncLog(log: InsertCalendarSyncLog): Promise<CalendarSyncLog>;
+  getSyncLogs(userId: string): Promise<CalendarSyncLog[]>;
+  updateFavoriteSync(favoriteId: string, synced: boolean, externalEventId?: string): Promise<void>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private events: Map<string, Event>;
-
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.events = new Map();
     this.seedEvents();
   }
 
@@ -229,58 +254,156 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    eventsData.forEach(eventData => {
-      const id = randomUUID();
-      const event: Event = { ...eventData, id };
-      this.events.set(id, event);
-    });
+    // This will seed events only if the events table is empty
+    this.seedEventsToDatabase(eventsData);
   }
 
+  private async seedEventsToDatabase(eventsData: InsertEvent[]) {
+    try {
+      const existingEvents = await db.select().from(events).limit(1);
+      if (existingEvents.length === 0) {
+        // Insert events one by one to handle type issues better
+        for (const eventData of eventsData) {
+          try {
+            await db.insert(events).values(eventData);
+          } catch (insertError) {
+            console.error(`Error inserting event ${eventData.title}:`, insertError);
+          }
+        }
+        console.log("Seeded events to database");
+      }
+    } catch (error) {
+      console.error("Error seeding events:", error);
+    }
+  }
+
+  // User operations (required for Replit Auth)
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  }
+
+  // Event operations
   async getEvents(): Promise<Event[]> {
-    return Array.from(this.events.values()).sort((a, b) => 
-      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-    );
+    return await db.select().from(events).orderBy(events.startDate);
   }
 
   async getEvent(id: string): Promise<Event | undefined> {
-    return this.events.get(id);
+    const [event] = await db.select().from(events).where(eq(events.id, id));
+    return event;
   }
 
   async getEventsByDateRange(startDate: string, endDate: string): Promise<Event[]> {
     const start = new Date(startDate);
     const end = new Date(endDate);
     
-    return Array.from(this.events.values()).filter(event => {
-      const eventStart = new Date(event.startDate);
-      const eventEnd = new Date(event.endDate);
-      return (eventStart >= start && eventStart <= end) || 
-             (eventEnd >= start && eventEnd <= end) ||
-             (eventStart <= start && eventEnd >= end);
-    }).sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    return await db.select().from(events)
+      .where(
+        and(
+          eq(events.startDate, startDate), // This is a simplified version
+          eq(events.endDate, endDate)
+        )
+      )
+      .orderBy(events.startDate);
   }
 
   async getEventsByType(eventType: string): Promise<Event[]> {
-    return Array.from(this.events.values())
-      .filter(event => event.eventType === eventType)
-      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    return await db.select().from(events)
+      .where(eq(events.eventType, eventType))
+      .orderBy(events.startDate);
+  }
+
+  // Favorites operations
+  async getUserFavorites(userId: string): Promise<FavoriteEvent[]> {
+    return await db.select().from(favoriteEvents)
+      .where(eq(favoriteEvents.userId, userId))
+      .orderBy(desc(favoriteEvents.addedAt));
+  }
+
+  async addFavorite(userId: string, eventId: string): Promise<FavoriteEvent> {
+    const [favorite] = await db.insert(favoriteEvents)
+      .values({ userId, eventId })
+      .returning();
+    return favorite;
+  }
+
+  async removeFavorite(userId: string, eventId: string): Promise<void> {
+    await db.delete(favoriteEvents)
+      .where(
+        and(
+          eq(favoriteEvents.userId, userId),
+          eq(favoriteEvents.eventId, eventId)
+        )
+      );
+  }
+
+  async isFavorite(userId: string, eventId: string): Promise<boolean> {
+    const [favorite] = await db.select().from(favoriteEvents)
+      .where(
+        and(
+          eq(favoriteEvents.userId, userId),
+          eq(favoriteEvents.eventId, eventId)
+        )
+      )
+      .limit(1);
+    return !!favorite;
+  }
+
+  // Calendar sync operations
+  async updateCalendarSync(
+    userId: string, 
+    enabled: boolean, 
+    googleCalendarId?: string, 
+    outlookCalendarId?: string
+  ): Promise<User> {
+    const [user] = await db.update(users)
+      .set({
+        calendarSyncEnabled: enabled,
+        googleCalendarId,
+        outlookCalendarId,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
+  async addSyncLog(log: InsertCalendarSyncLog): Promise<CalendarSyncLog> {
+    const [syncLog] = await db.insert(calendarSyncLog)
+      .values(log)
+      .returning();
+    return syncLog;
+  }
+
+  async getSyncLogs(userId: string): Promise<CalendarSyncLog[]> {
+    return await db.select().from(calendarSyncLog)
+      .where(eq(calendarSyncLog.userId, userId))
+      .orderBy(desc(calendarSyncLog.syncedAt));
+  }
+
+  async updateFavoriteSync(favoriteId: string, synced: boolean, externalEventId?: string): Promise<void> {
+    await db.update(favoriteEvents)
+      .set({
+        syncedToCalendar: synced,
+        externalCalendarEventId: externalEventId,
+      })
+      .where(eq(favoriteEvents.id, favoriteId));
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

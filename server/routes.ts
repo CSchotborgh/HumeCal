@@ -1,8 +1,25 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { setupAuth, isAuthenticated } from "./replitAuth";
+import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
   // Get all events
   app.get("/api/events", async (_req, res) => {
     try {
@@ -44,6 +61,103 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(events);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch events by type" });
+    }
+  });
+
+  // User favorites routes (protected)
+  app.get("/api/favorites", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const favorites = await storage.getUserFavorites(userId);
+      res.json(favorites);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+      res.status(500).json({ message: "Failed to fetch favorites" });
+    }
+  });
+
+  app.post("/api/favorites", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { eventId } = req.body;
+      
+      if (!eventId) {
+        return res.status(400).json({ message: "Event ID is required" });
+      }
+
+      // Check if event exists
+      const event = await storage.getEvent(eventId);
+      if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+      }
+
+      // Check if already favorited
+      const isFav = await storage.isFavorite(userId, eventId);
+      if (isFav) {
+        return res.status(409).json({ message: "Event already favorited" });
+      }
+
+      const favorite = await storage.addFavorite(userId, eventId);
+      res.status(201).json(favorite);
+    } catch (error) {
+      console.error("Error adding favorite:", error);
+      res.status(500).json({ message: "Failed to add favorite" });
+    }
+  });
+
+  app.delete("/api/favorites/:eventId", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { eventId } = req.params;
+
+      await storage.removeFavorite(userId, eventId);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error removing favorite:", error);
+      res.status(500).json({ message: "Failed to remove favorite" });
+    }
+  });
+
+  app.get("/api/favorites/check/:eventId", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { eventId } = req.params;
+      
+      const isFavorite = await storage.isFavorite(userId, eventId);
+      res.json({ isFavorite });
+    } catch (error) {
+      console.error("Error checking favorite:", error);
+      res.status(500).json({ message: "Failed to check favorite status" });
+    }
+  });
+
+  // Calendar sync routes (protected)
+  app.put("/api/calendar-sync", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { enabled, googleCalendarId, outlookCalendarId } = req.body;
+
+      const user = await storage.updateCalendarSync(
+        userId, 
+        enabled, 
+        googleCalendarId, 
+        outlookCalendarId
+      );
+      res.json(user);
+    } catch (error) {
+      console.error("Error updating calendar sync:", error);
+      res.status(500).json({ message: "Failed to update calendar sync" });
+    }
+  });
+
+  app.get("/api/sync-logs", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const logs = await storage.getSyncLogs(userId);
+      res.json(logs);
+    } catch (error) {
+      console.error("Error fetching sync logs:", error);
+      res.status(500).json({ message: "Failed to fetch sync logs" });
     }
   });
 

@@ -1,143 +1,153 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { FavoriteButton } from "@/components/favorite-button";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Event } from "@shared/schema";
 
 interface CalendarGridProps {
-  currentDate: Date;
   events: Event[];
+  currentDate: Date;
   onEventClick: (event: Event) => void;
+  onNavigateMonth: (direction: 'prev' | 'next') => void;
 }
 
-export function CalendarGrid({ currentDate, events, onEventClick }: CalendarGridProps) {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  
-  // Get first day of month and number of days in month
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const daysInMonth = lastDay.getDate();
-  const startingDayOfWeek = firstDay.getDay();
-  
-  // Get days from previous month to fill the grid
-  const daysFromPrevMonth = new Date(year, month, 0).getDate();
-  
-  // Create array of all days to display
-  const calendarDays = [];
-  
-  // Previous month days
-  for (let i = startingDayOfWeek - 1; i >= 0; i--) {
-    calendarDays.push({
-      day: daysFromPrevMonth - i,
-      isCurrentMonth: false,
-      date: new Date(year, month - 1, daysFromPrevMonth - i)
-    });
-  }
-  
-  // Current month days
-  for (let day = 1; day <= daysInMonth; day++) {
-    calendarDays.push({
-      day,
-      isCurrentMonth: true,
-      date: new Date(year, month, day)
-    });
-  }
-  
-  // Next month days to fill remaining slots
-  const remainingSlots = 42 - calendarDays.length; // 6 rows × 7 days
-  for (let day = 1; day <= remainingSlots; day++) {
-    calendarDays.push({
-      day,
-      isCurrentMonth: false,
-      date: new Date(year, month + 1, day)
-    });
-  }
+export function CalendarGrid({ events, currentDate, onEventClick, onNavigateMonth }: CalendarGridProps) {
+  const { isAuthenticated } = useAuth();
 
-  // Function to get events for a specific date
-  const getEventsForDate = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0];
-    return events.filter(event => {
-      const eventStart = event.startDate;
-      const eventEnd = event.endDate;
-      return dateStr >= eventStart && dateStr <= eventEnd;
-    });
-  };
+  const { calendarDays, monthName } = useMemo(() => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    // Get first day of month and how many days to show from previous month
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+    
+    // Generate 42 days (6 weeks) for the calendar grid
+    const days = [];
+    const currentCalendarDate = new Date(startDate);
+    
+    for (let i = 0; i < 42; i++) {
+      const dayEvents = events.filter(event => {
+        const eventStart = new Date(event.startDate);
+        const eventEnd = new Date(event.endDate);
+        return currentCalendarDate >= eventStart && currentCalendarDate <= eventEnd;
+      });
+      
+      days.push({
+        date: new Date(currentCalendarDate),
+        isCurrentMonth: currentCalendarDate.getMonth() === month,
+        isToday: currentCalendarDate.toDateString() === new Date().toDateString(),
+        events: dayEvents
+      });
+      
+      currentCalendarDate.setDate(currentCalendarDate.getDate() + 1);
+    }
+    
+    return {
+      calendarDays: days,
+      monthName: firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    };
+  }, [currentDate, events]);
 
   const getEventColor = (eventType: string, title: string) => {
-    // Check both event type and title for better matching
     const text = `${eventType} ${title}`.toLowerCase();
     
-    if (text.includes("women") || text.includes("ladies")) return "bg-pink-500 text-white";
-    if (text.includes("men") || text.includes("pastor") || text.includes("father")) return "bg-blue-600 text-white";
-    if (text.includes("family")) return "bg-green-600 text-white";
-    if (text.includes("young") || text.includes("youth") || text.includes("teen")) return "bg-orange-500 text-white";
-    if (text.includes("creative") || text.includes("art")) return "bg-purple-600 text-white";
-    if (text.includes("adventure") || text.includes("outdoor")) return "bg-teal-600 text-white";
-    if (text.includes("senior") || text.includes("adult")) return "bg-indigo-600 text-white";
-    return "bg-primary text-primary-foreground";
+    if (text.includes("women") || text.includes("ladies")) return "bg-pink-500";
+    if (text.includes("men") || text.includes("pastor") || text.includes("father")) return "bg-blue-600";
+    if (text.includes("family")) return "bg-green-600";
+    if (text.includes("young") || text.includes("youth") || text.includes("teen")) return "bg-orange-500";
+    if (text.includes("marriage") || text.includes("couples")) return "bg-purple-500";
+    if (text.includes("creative") || text.includes("arts")) return "bg-yellow-500";
+    if (text.includes("retreat")) return "bg-teal-500";
+    return "bg-gray-500";
   };
 
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
   return (
-    <div className="grid grid-cols-7 border border-border rounded-md overflow-hidden">
-      {/* Calendar Headers */}
-      {days.map(day => (
-        <div key={day} className="bg-muted p-2 text-center border-b border-border">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{day}</span>
+    <div className="bg-card border border-border rounded-lg shadow-sm">
+      {/* Calendar Header */}
+      <div className="px-6 py-4 border-b border-border">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-foreground">{monthName}</h2>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onNavigateMonth('prev')}
+              className="h-8 w-8"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onNavigateMonth('next')}
+              className="h-8 w-8"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-      ))}
+      </div>
 
-      {/* Calendar Days */}
-      {calendarDays.map((calendarDay, index) => {
-        const dayEvents = getEventsForDate(calendarDay.date);
-        const isLastRow = index >= 35;
-        const isLastColumn = (index + 1) % 7 === 0;
-        
-        return (
-          <div 
+      {/* Day of week headers */}
+      <div className="grid grid-cols-7 border-b border-border">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+          <div key={day} className="p-3 text-center text-sm font-medium text-muted-foreground">
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar Grid */}
+      <div className="grid grid-cols-7">
+        {calendarDays.map((day, index) => (
+          <div
             key={index}
-            className={`bg-background p-2 min-h-[100px] relative hover:bg-muted/50 transition-colors
-              ${!isLastRow ? 'border-b border-border' : ''}
-              ${!isLastColumn ? 'border-r border-border' : ''}
-            `}
+            className={`min-h-[120px] border-r border-b border-border p-2 ${
+              !day.isCurrentMonth ? 'bg-muted/30' : 'bg-background'
+            } ${day.isToday ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
           >
-            <span className={`text-sm ${
-              calendarDay.isCurrentMonth 
-                ? 'text-foreground font-medium' 
-                : 'text-muted-foreground'
-            }`}>
-              {calendarDay.day}
-            </span>
+            <div className={`text-sm font-medium mb-2 ${
+              !day.isCurrentMonth ? 'text-muted-foreground' : 'text-foreground'
+            } ${day.isToday ? 'text-blue-600 dark:text-blue-400 font-bold' : ''}`}>
+              {day.date.getDate()}
+            </div>
             
-            {/* Events for this day */}
-            <div className="mt-1 space-y-1">
-              {dayEvents.slice(0, 2).map(event => {
-                const minPrice = Math.min(...event.pricingOptions.map(p => p.price));
-                const maxPrice = Math.max(...event.pricingOptions.map(p => p.price));
-                
-                return (
-                  <div
-                    key={event.id}
-                    className={`${getEventColor(event.eventType, event.title)} text-xs px-2 py-1 rounded-sm cursor-pointer hover:opacity-90 transition-opacity`}
-                    onClick={() => onEventClick(event)}
-                  >
-                    <div className="font-medium truncate">{event.title}</div>
-                    <div className="text-xs opacity-80">
-                      ${minPrice}{minPrice !== maxPrice ? `+` : ''}
-                    </div>
+            <div className="space-y-1">
+              {day.events.slice(0, 3).map((event, eventIndex) => (
+                <div
+                  key={event.id}
+                  className="group relative cursor-pointer"
+                  onClick={() => onEventClick(event)}
+                >
+                  <div className={`p-1 rounded text-xs font-medium text-white text-left truncate ${getEventColor(event.eventType, event.title)}`}>
+                    {event.title}
                   </div>
-                );
-              })}
-              
-              {/* Show "more" indicator if there are additional events */}
-              {dayEvents.length > 2 && (
-                <div className="text-xs text-muted-foreground px-2 py-1">
-                  +{dayEvents.length - 2} more
+                  {isAuthenticated && (
+                    <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <FavoriteButton 
+                        eventId={event.id} 
+                        variant="ghost" 
+                        size="icon"
+                        className="w-5 h-5 bg-white/90 hover:bg-white text-gray-600 hover:text-red-500"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+              {day.events.length > 3 && (
+                <div className="text-xs text-muted-foreground">
+                  +{day.events.length - 3} more
                 </div>
               )}
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 }

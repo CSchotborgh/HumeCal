@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { FavoriteButton } from "@/components/favorite-button";
 import { X, ChevronDown } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { Event } from "@shared/schema";
@@ -137,9 +138,24 @@ export function EventModal({ event, onClose }: EventModalProps) {
               </Accordion>
 
               <div className="space-y-3">
-                <Button className="w-full bg-primary text-primary-foreground font-medium py-3 px-4 rounded-md hover:bg-primary/90 transition-colors">
-                  Register Now
-                </Button>
+                <div className="flex gap-3">
+                  <a 
+                    href="https://register.hume.org" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1"
+                  >
+                    <Button className="w-full bg-primary text-primary-foreground font-medium py-3 px-4 rounded-md hover:bg-primary/90 transition-colors">
+                      Register Now
+                    </Button>
+                  </a>
+                  <FavoriteButton 
+                    eventId={event.id} 
+                    variant="outline" 
+                    size="lg" 
+                    className="px-4"
+                  />
+                </div>
                 <Button variant="outline" className="w-full font-medium py-3 px-4 rounded-md hover:bg-muted transition-colors">
                   Learn More
                 </Button>
