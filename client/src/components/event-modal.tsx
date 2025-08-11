@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/components/favorite-button";
-import { X, ChevronDown } from "lucide-react";
+import { X, ChevronDown, Printer } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import type { Event } from "@shared/schema";
 
@@ -15,6 +15,176 @@ export function EventModal({ event, onClose }: EventModalProps) {
     if (e.target === e.currentTarget) {
       onClose();
     }
+  };
+
+  const printEvent = () => {
+    // Create a print-friendly version of the event details
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${event.title} - Hume Lake Christian Camps</title>
+          <style>
+            body { 
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+              line-height: 1.6;
+              color: #000;
+              background: #fff;
+              margin: 0;
+              padding: 40px;
+            }
+            .header {
+              text-align: center;
+              border-bottom: 2px solid #000;
+              padding-bottom: 20px;
+              margin-bottom: 30px;
+            }
+            .logo {
+              font-size: 18px;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+            .event-title {
+              font-size: 24px;
+              font-weight: bold;
+              margin: 20px 0 10px 0;
+            }
+            .event-type {
+              background: #f0f0f0;
+              padding: 4px 12px;
+              border-radius: 4px;
+              font-size: 14px;
+              display: inline-block;
+              margin-bottom: 20px;
+            }
+            .details-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 30px;
+              margin-bottom: 30px;
+            }
+            .detail-row {
+              display: flex;
+              justify-content: space-between;
+              padding: 8px 0;
+              border-bottom: 1px solid #ddd;
+            }
+            .detail-label {
+              font-weight: 600;
+              color: #666;
+            }
+            .detail-value {
+              font-weight: 500;
+            }
+            .description {
+              margin: 20px 0;
+              line-height: 1.7;
+            }
+            .pricing-section {
+              border: 1px solid #ddd;
+              padding: 20px;
+              border-radius: 8px;
+              margin-top: 30px;
+            }
+            .pricing-title {
+              font-size: 18px;
+              font-weight: bold;
+              margin-bottom: 15px;
+            }
+            .pricing-item {
+              display: flex;
+              justify-content: space-between;
+              padding: 8px 0;
+              border-bottom: 1px solid #eee;
+            }
+            .pricing-item:last-child {
+              border-bottom: none;
+            }
+            .contact-info {
+              margin-top: 30px;
+              padding: 20px;
+              background: #f9f9f9;
+              border-radius: 8px;
+            }
+            @media print {
+              body { padding: 20px; }
+              .header { page-break-inside: avoid; }
+              .pricing-section { page-break-inside: avoid; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">Hume Lake Christian Camps</div>
+            <div>Event Details</div>
+          </div>
+          
+          <div class="event-title">${event.title}</div>
+          <div class="event-type">${event.eventType}</div>
+          
+          <div class="details-grid">
+            <div>
+              <div class="detail-row">
+                <span class="detail-label">Start Date:</span>
+                <span class="detail-value">${formatDate(event.startDate)}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">End Date:</span>
+                <span class="detail-value">${formatDate(event.endDate)}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Location:</span>
+                <span class="detail-value">${event.location}</span>
+              </div>
+            </div>
+            <div>
+              <div class="detail-row">
+                <span class="detail-label">Age Group:</span>
+                <span class="detail-value">${event.ageGroup}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Price Range:</span>
+                <span class="detail-value">$${minPrice}${minPrice !== maxPrice ? ` - $${maxPrice}` : ''}</span>
+              </div>
+            </div>
+          </div>
+          
+          ${event.description ? `
+            <div>
+              <h3>Description</h3>
+              <div class="description">${event.description}</div>
+            </div>
+          ` : ''}
+          
+          <div class="pricing-section">
+            <div class="pricing-title">Pricing Options</div>
+            ${event.pricingOptions.map(option => `
+              <div class="pricing-item">
+                <span>${option.name}</span>
+                <span>$${option.price}</span>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="contact-info">
+            <h3>Registration Information</h3>
+            <p><strong>Phone:</strong> (559) 305-7788</p>
+            <p><strong>Email:</strong> registration@hume.org</p>
+            <p><strong>Website:</strong> https://register.hume.org</p>
+            <p><strong>Address:</strong> 64144 Hume Lake Road, Hume, CA 93628</p>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
   };
 
   const formatDate = (dateStr: string) => {
@@ -40,14 +210,25 @@ export function EventModal({ event, onClose }: EventModalProps) {
         <div className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="h-8 w-8 text-muted-foreground hover:text-foreground"
-            >
-              <X className="w-4 h-4" />
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={printEvent}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Printer className="w-4 h-4 mr-2" />
+                Print
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
         <div className="p-8">
