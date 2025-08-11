@@ -34,9 +34,13 @@ The application uses a dual storage approach:
 - **Database Migration**: Drizzle Kit for schema migrations and database management
 
 ## Key Features
-- **Event Calendar**: Monthly calendar view displaying camp events with visual indicators
+- **Event Calendar**: Multiple calendar views (Month, Week, Year, List) displaying camp events with visual indicators
 - **Advanced Filtering**: Multi-faceted filtering by event type, price range, age groups, and search terms
 - **Event Details**: Modal popups showing comprehensive event information including pricing options
+- **User Authentication**: Replit OAuth integration for secure user login and session management
+- **Favorites System**: Personal event bookmarking for authenticated users
+- **Print Functionality**: Professional print layouts for all calendar views with GitHub-style formatting
+- **Contact Integration**: Direct access to Hume Lake contact information and navigation
 - **Responsive Design**: Mobile-first design approach with adaptive layouts
 - **Type Safety**: End-to-end TypeScript implementation with shared schemas
 
@@ -69,3 +73,13 @@ The application uses a dual storage approach:
 - **React Hook Form**: Performant form library with minimal re-renders
 - **Zod**: Runtime type validation and schema definition
 - **Hookform Resolvers**: Integration between React Hook Form and Zod validation
+
+## Authentication and Security
+- **Replit OAuth**: OpenID Connect integration for secure user authentication
+- **Session Management**: PostgreSQL-backed session storage with secure cookie handling
+- **User Management**: Database storage of user profiles with OAuth claim integration
+
+## Documentation
+- **GitHub README**: Comprehensive documentation with architecture diagrams and setup instructions
+- **Flow Diagrams**: Mermaid-based visual representation of application workflow
+- **API Documentation**: Complete endpoint documentation with authentication requirements
