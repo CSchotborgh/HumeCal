@@ -25,67 +25,6 @@ export function EventModal({ event, onClose }: EventModalProps) {
     });
   };
 
-  const getEventImage = (eventType: string, title: string) => {
-    const text = `${eventType} ${title}`.toLowerCase();
-    
-    // Mountain lake scenery for general retreats
-    if (text.includes("retreat") || text.includes("camp")) {
-      return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Women's retreats - serene lake with flowers
-    if (text.includes("women") || text.includes("ladies")) {
-      return "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Men's retreats - mountain wilderness
-    if (text.includes("men") || text.includes("pastor") || text.includes("father")) {
-      return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Family events - lakeside gathering
-    if (text.includes("family")) {
-      return "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Youth/Young Adults - adventure activities
-    if (text.includes("young") || text.includes("youth") || text.includes("teen")) {
-      return "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Marriage/Couples - romantic lakeside
-    if (text.includes("marriage") || text.includes("couples")) {
-      return "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Creative Arts - artistic mountain setting
-    if (text.includes("creative") || text.includes("arts")) {
-      return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Summer camps - sunny lake activities
-    if (text.includes("summer")) {
-      return "https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-    }
-    
-    // Default Hume Lake scenic view
-    return "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=400&q=80";
-  };
-
-  const getEventImageAlt = (eventType: string, title: string) => {
-    const text = `${eventType} ${title}`.toLowerCase();
-    
-    if (text.includes("women") || text.includes("ladies")) return "Serene mountain lake setting for women's retreat";
-    if (text.includes("men") || text.includes("pastor") || text.includes("father")) return "Mountain wilderness for men's retreat";
-    if (text.includes("family")) return "Beautiful lakeside setting for family gathering";
-    if (text.includes("young") || text.includes("youth") || text.includes("teen")) return "Adventure activities at mountain lake for youth";
-    if (text.includes("marriage") || text.includes("couples")) return "Romantic lakeside setting for couples retreat";
-    if (text.includes("creative") || text.includes("arts")) return "Inspiring mountain scenery for creative arts retreat";
-    if (text.includes("summer")) return "Sunny lake activities for summer camp";
-    
-    return "Beautiful Hume Lake Christian Camp mountain setting";
-  };
-
   const minPrice = Math.min(...event.pricingOptions.map(p => p.price));
   const maxPrice = Math.max(...event.pricingOptions.map(p => p.price));
 
@@ -100,36 +39,7 @@ export function EventModal({ event, onClose }: EventModalProps) {
       >
         <div className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
-              {event.location?.includes("SoCal") && (
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                    Hume SoCal
-                  </span>
-                  {event.description?.includes("FILLING FAST") && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                      FILLING FAST
-                    </span>
-                  )}
-                  {event.description?.includes("50% OFF") && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                      50% OFF
-                    </span>
-                  )}
-                  {event.description?.includes("WAITLIST") && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                      JOIN WAITLIST
-                    </span>
-                  )}
-                  {event.description?.includes("FREE counselors") && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">
-                      FREE COUNSELORS
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
+            <h2 className="text-xl font-semibold text-foreground">{event.title}</h2>
             <Button
               variant="ghost"
               size="icon"
@@ -142,8 +52,8 @@ export function EventModal({ event, onClose }: EventModalProps) {
         </div>
         <div className="p-8">
           <img 
-            src={getEventImage(event.eventType, event.title)}
-            alt={getEventImageAlt(event.eventType, event.title)}
+            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=300" 
+            alt="Hume Lake retreat center" 
             className="w-full h-56 object-cover rounded-lg mb-8"
           />
 
@@ -192,21 +102,9 @@ export function EventModal({ event, onClose }: EventModalProps) {
               {event.description && (
                 <div className="mt-8">
                   <h3 className="text-lg font-semibold text-foreground mb-4">About This Event</h3>
-                  <div className="text-muted-foreground leading-relaxed">
-                    {/* Extract speaker information from description for SoCal events */}
-                    {event.location?.includes("SoCal") && event.description?.includes("Speaker:") ? (
-                      <div>
-                        <p className="mb-3">
-                          {event.description.split("Speaker:")[0].trim()}
-                        </p>
-                        <div className="font-medium text-foreground bg-gray-50 dark:bg-gray-800 p-3 rounded-md">
-                          🎤 Speaker: {event.description.split("Speaker:")[1].split(".")[0].trim()}
-                        </div>
-                      </div>
-                    ) : (
-                      <p>{event.description}</p>
-                    )}
-                  </div>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {event.description}
+                  </p>
                 </div>
               )}
             </div>

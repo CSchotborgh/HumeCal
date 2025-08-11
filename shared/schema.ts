@@ -14,8 +14,6 @@ export const events = pgTable("events", {
   ageGroup: text("age_group").notNull(), // "8-11", "18+", "16-17", etc.
   gender: text("gender"), // "Male", "Female", "Coed", null
   location: text("location").default("Hume Lake, CA"),
-  speaker: text("speaker"), // Featured speaker name
-  specialNotes: text("special_notes"), // "FILLING FAST", "50% OFF", etc.
   pricingOptions: jsonb("pricing_options").notNull().$type<PricingOption[]>(),
 });
 

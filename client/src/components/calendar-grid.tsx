@@ -124,11 +124,8 @@ export function CalendarGrid({ events, currentDate, onEventClick, onNavigateMont
                   className="group relative cursor-pointer"
                   onClick={() => onEventClick(event)}
                 >
-                  <div className={`p-1 rounded text-xs font-medium text-white text-left ${getEventColor(event.eventType, event.title)}`}>
-                    <div className="truncate">{event.title}</div>
-                    {event.location?.includes("SoCal") && (
-                      <div className="text-xs opacity-75 mt-0.5">SoCal</div>
-                    )}
+                  <div className={`p-1 rounded text-xs font-medium text-white text-left truncate ${getEventColor(event.eventType, event.title)}`}>
+                    {event.title}
                   </div>
                   {isAuthenticated && (
                     <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity">

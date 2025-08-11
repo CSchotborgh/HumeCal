@@ -12,7 +12,6 @@ interface EventFiltersProps {
     eventTypes: string[];
     priceRange: { min: number; max: number };
     ageGroups: string[];
-    locations?: string[];
   };
   onFiltersChange: (filters: any) => void;
   eventTypeCounts: Record<string, number>;
@@ -58,27 +57,17 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
     updateFilters('ageGroups', newAgeGroups);
   };
 
-  const toggleLocation = (location: string) => {
-    const currentLocations = filters.locations || [];
-    const newLocations = currentLocations.includes(location)
-      ? currentLocations.filter(l => l !== location)
-      : [...currentLocations, location];
-    updateFilters('locations', newLocations);
-  };
-
   const clearAllFilters = () => {
     onFiltersChange({
       search: "",
       eventTypes: [],
       priceRange: { min: 0, max: 1000 },
-      ageGroups: [],
-      locations: []
+      ageGroups: []
     });
   };
 
   const hasActiveFilters = filters.search || filters.eventTypes.length > 0 || 
-    filters.ageGroups.length > 0 || filters.priceRange.min > 0 || filters.priceRange.max < 1000 ||
-    (filters.locations && filters.locations.length > 0);
+    filters.ageGroups.length > 0 || filters.priceRange.min > 0 || filters.priceRange.max < 1000;
 
   return (
     <Card>
@@ -137,39 +126,6 @@ export function EventFilters({ filters, onFiltersChange, eventTypeCounts }: Even
                 </span>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Location Filter */}
-        <div>
-          <label className="text-sm font-medium text-foreground mb-3 block">Locations</label>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="location-hume-lake"
-                checked={filters.locations?.includes("Hume Lake") || false}
-                onCheckedChange={() => toggleLocation("Hume Lake")}
-              />
-              <label
-                htmlFor="location-hume-lake"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Hume Lake, CA
-              </label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="location-hume-socal"
-                checked={filters.locations?.includes("Hume SoCal") || false}
-                onCheckedChange={() => toggleLocation("Hume SoCal")}
-              />
-              <label
-                htmlFor="location-hume-socal"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Hume SoCal, Green Valley Lake, CA
-              </label>
-            </div>
           </div>
         </div>
 

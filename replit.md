@@ -35,10 +35,7 @@ The application uses a dual storage approach:
 
 ## Key Features
 - **Event Calendar**: Monthly calendar view displaying camp events with visual indicators
-- **Multi-Location Support**: Displays events from both Hume Lake and Hume SoCal campgrounds with location filtering
-- **Advanced Filtering**: Multi-faceted filtering by event type, location, price range, age groups, and search terms
-- **Context-Relevant Images**: Dynamic image selection in event modals based on event type and name
-- **User Authentication**: Replit OAuth integration with user favorites and personal calendar sync
+- **Advanced Filtering**: Multi-faceted filtering by event type, price range, age groups, and search terms
 - **Event Details**: Modal popups showing comprehensive event information including pricing options
 - **Responsive Design**: Mobile-first design approach with adaptive layouts
 - **Type Safety**: End-to-end TypeScript implementation with shared schemas
